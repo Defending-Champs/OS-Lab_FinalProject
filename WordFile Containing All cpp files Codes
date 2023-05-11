@@ -1,0 +1,5326 @@
+//////////////////////////////////////////////////////OPERATING SYSTEMS LAB//////////////////////////////////////////////////////
+//////////////////////////////////////////////////////FINAL PROJECT//////////////////////////////////////////////////////
+//////////////////////////////////////////////////////Functionalities//////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////1.	TicTacToe
+//////////////////////////////////////////////////////CODE:  
+
+
+
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
+char board[10] = { '0','1','2','3','4','5','6','7','8','9' };
+int p1score = 0, p2score = 0;
+using namespace std;
+fstream score;
+void play_game();
+void main_menu();
+bool player_turn(int p)
+{
+    p = (p % 2) ? 1 : 2;
+    if (p == 1)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+bool bool_toss(int turn1)
+{
+    int toss = rand() % 2;
+    if (toss == 1 && turn1 == 1)
+    {
+        return true;
+    }
+    else if (toss == 0 && turn1 == 0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+int winning_condition()
+{
+    if (board[1] == board[2] && board[2] == board[3])
+    {
+        return 1;
+    }
+    else if (board[4] == board[5] && board[5] == board[6])
+    {
+        return 1;
+    }
+    else if (board[7] == board[8] && board[8] == board[9])
+    {
+        return 1;
+    }
+    else if (board[1] == board[4] && board[4] == board[7])
+    {
+        return 1;
+    }
+    else if (board[2] == board[5] && board[5] == board[8])
+    {
+        return 1;
+    }
+    else if (board[3] == board[6] && board[6] == board[9])
+    {
+        return 1;
+    }
+    else if (board[1] == board[5] && board[5] == board[9])
+    {
+        return 1;
+    }
+    else if (board[3] == board[5] && board[5] == board[7])
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+int draw_condition()
+{
+    if (board[1] != '1' && board[2] != '2' && board[3] != '3' && board[4] != '4' && board[5] != '5' && board[6] != '6' && board[7] != '7' && board[8] != '8' && board[9] != '9')
+    {
+        return 1;
+    }
+    else
+    {
+    	return 0;
+    }
+
+}
+void credits()
+{
+    cout << "\nCredits:\n\nCreated by 21F-9122, 21F-9198, 21F-9068, 21F-9083\nSec: BSCS(4A) \n\n";
+    main_menu();
+}
+void instructions()
+{
+    cout << "\nInstructions\n\nThere are one mode of game i.e Player vs Player\n";
+    cout << "User will shift turns and one will have X other will have O\n";
+    cout << "Vertical, Horizontal or diagonal match of same symbols will make the respective player win!\n";
+    cout << "Note : Boxes contain numbers from 1-9. Select within them\n\n";
+    main_menu();
+}
+void end()
+{
+    cout << "The user ended the program!";
+}
+void main_menu()
+{
+    cout << "Input \n1: To play game \n2: For Instructions \n3: For Credits \n4: To exit program\n";
+    int c;
+    cin >> c;
+    while (c != 1 && c != 2 && c != 3 && c != 4 && c != 5)
+    {
+        cout << "Error! Enter from 1-4 : ";
+        cin >> c;
+    }
+    (c == 1) ? play_game() : (c == 2) ? instructions() : (c == 3) ? credits() : end();
+}
+void Displayboard()
+{
+    cout << endl;
+    cout << "     |     |     " << endl;
+    cout << "  " << board[1] << "  |  " << board[2] << "  |  " << board[3] << endl;
+    cout << "_____|_____|_____" << endl;
+    cout << "     |     |     " << endl;
+    cout << "  " << board[4] << "  |  " << board[5] << "  |  " << board[6] << endl;
+    cout << "_____|_____|_____" << endl;
+    cout << "     |     |     " << endl;
+    cout << "  " << board[7] << "  |  " << board[8] << "  |  " << board[9] << endl;
+    cout << "     |     |     " << endl << endl;
+}
+
+int checkcontinuity()
+{
+    if (winning_condition() != 1 && draw_condition() != 1)
+    {
+        return -1;
+    }
+    else
+    {
+    	return 0;
+    }
+}
+void play_game()
+{
+    cout << endl << "To Play Game : \n\n";
+    int choice, box;
+    cout << "\nYou selected Player vs Player mode \n";
+    cout << "Player 1 (X)  -  Player 2 (O)\n" << endl;
+    int player, turn, i;
+    char mark;
+    cout << "Enter 0/1 for player 1 toss :  ";
+    cin >> turn;
+    while (turn != 0 && turn != 1)
+    {
+        cout << "Error! Enter again 0/1";
+        cin >> turn;
+    }
+    if (bool_toss(turn) == true)
+    {
+        player = 1;
+        cout << "You won the toss!";
+    }
+    else
+    {
+        player = 2;
+        cout << "Player 2 won the toss!";
+    }
+    do
+    {
+        Displayboard();
+        if (player_turn(player) == true)
+        {
+            player = 1;
+        }
+        else
+        {
+            player = 2;
+        }
+        cout << "Player " << player << ", enter a number:  ";
+        cin >> choice;
+        mark = (player == 1) ? 'X' : 'O';
+        if (choice == 1 && board[1] == '1')
+        { 
+            board[1] = mark;
+        }
+        else if (choice == 2 && board[2] == '2')
+        { 
+            board[2] = mark;        
+        }
+        else if (choice == 3 && board[3] == '3')
+        { 
+            board[3] = mark;
+        }
+        else if (choice == 4 && board[4] == '4')
+        { 
+            board[4] = mark;
+        }
+        else if (choice == 5 && board[5] == '5')
+        { 
+            board[5] = mark;
+        }
+        else if (choice == 6 && board[6] == '6')
+        { 
+            board[6] = mark;
+        }
+        else if (choice == 7 && board[7] == '7')
+        { 
+            board[7] = mark;
+        }
+        else if (choice == 8 && board[8] == '8')
+        { 
+            board[8] = mark;
+        }
+        else if (choice == 9 && board[9] == '9')
+        {
+            board[9] = mark;
+        }
+        else
+        {
+            cout << "Invalid move ";
+            player--;
+            cin.ignore();
+            cin.get();
+        }
+        player++;
+        system("clear");
+    } while (checkcontinuity() == -1);
+    Displayboard();
+    if (winning_condition() == 1)
+    {
+        int p = --player;
+        cout << "\n\t\t==>\aPlayer " << p << " win \n\n";
+    }
+    else if (draw_condition() == 1)
+    {
+        cout << "\t==>\aGame draw";
+    }
+    cin.ignore();
+    cin.get();
+}
+int main()
+{
+	system("clear");
+    cout << "\n\n\n\t\tTic Tac Toe\n\n\n\n";
+
+    main_menu();
+    cout << endl;
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////2.	Text Editor
+//////////////////////////////////////////////////////CODE:
+
+
+
+#include<iostream>
+#include<fstream>
+#include<string>
+//#include<conio.h>
+#include <unistd.h>
+
+using namespace std;
+
+
+//--------------------------------------------------------------------Classes-------------------------------------------------------------------------------
+
+
+								//-----------------------------------Trie trees ADT-------------------------------------
+
+struct TrieNode
+{
+	TrieNode* links[26];
+	bool flag = false;
+	bool containKey(char);							//checks if the reference trie is present or not
+	void put(char, TrieNode*);						//creating reference trie
+	TrieNode* get(char);							//to get the next node for traversal
+	void setEnd();									//setting flag to true at the end of the word
+	bool isEnd();									//checking if the word is completed or not
+};
+
+class TrieTree
+{
+private:
+	int sugg_Limit;
+	int count;
+	int present;
+	string* strSuggessions;
+public:
+	TrieNode* root;
+	TrieTree();
+	void insert(string);									//Insertion in a trie tree
+	void Sugg(TrieNode*, string);							//Recursive function to print suggessions
+	void selectWord(string&);								//To select word from given suggessions
+	void GiveSuggessions(TrieNode*, string);				//print suggestions for given string
+};
+
+
+
+//-----------------------------------Priority queue ADT-------------------------------------
+
+struct PQ_node
+{
+	char data;
+	int prior;
+	PQ_node* next = NULL;
+	PQ_node();
+};
+
+class P_Queue
+{
+private:
+	PQ_node* head;
+public:
+	char queueArray[26];
+	int priority[26];
+	int queueSize;
+	P_Queue();										//constructor
+	bool IsEmpty();									//Check if queue is empty
+	void Insert(char, int);							//inserting element in priority queue list
+	void sort(char[], int[]);						//Applying bubble sort algorithim for sorting the queue arr
+	void display();									//Function to display the values of Priority queue list
+	void get(string, int);				//Function which gets a string,its size and sort by priority and insert in list
+};
+
+
+
+//-----------------------------------MinHeap ADT-------------------------------------
+
+struct Mnode
+{
+	Mnode* left, * right;
+	Mnode* next;
+	char data;
+	int prior;
+	Mnode();
+};
+
+class MHeap
+{
+	Mnode* root;
+	string* arr;
+	int CharNum;
+	int size;
+public:
+	fstream codes, org, encoded;
+	MHeap();
+	void Insert(P_Queue);										//to insert elements of priority queue in heap
+	void Enqueue(Mnode*);
+	Mnode* Dequeue();
+	void sort();												//Sorting list
+	Mnode* system();											//function to implement the process of making huffman tree
+	void HuffMan();												//Making tree and decreasing the priority queue
+	void Search(Mnode*, string, char, string&);					//Function used to find codes for a character
+	void FindCode(string&, char);								//Function used to find codes of string alphaets using the above recursive function
+	void AssignCodes(P_Queue, string);							//function to assign codes from file to array
+	void read();												//Function to decode the text from the file
+	void read2();
+};
+
+
+
+//----------------------------------------------------------------Implementation----------------------------------------------------------------------------
+
+
+						//-----------------------------------Trie trees Implementation-------------------------------------
+
+
+//checks if the reference trie is present or not
+bool TrieNode::containKey(char ch)
+{
+	return (links[ch - 'a'] != NULL);
+}
+
+
+//creating reference trie
+void TrieNode::put(char ch, TrieNode* node)
+{
+	links[ch - 'a'] = node;
+}
+
+
+//to get the next node for traversal
+TrieNode* TrieNode::get(char ch)
+{
+	return links[ch - 'a'];
+}
+
+
+//setting flag to true at the end of the word
+void TrieNode::setEnd()
+{
+	flag = true;
+}
+
+
+//checking if the word is completed or not
+bool TrieNode::isEnd()
+{
+	return flag;
+}
+
+
+//Constructor of trie tree
+TrieTree::TrieTree()
+{
+	sugg_Limit = 10;
+	count = 0;
+	present = 0;
+	root = new TrieNode();
+	strSuggessions = new string[sugg_Limit];
+}
+
+
+//Insert function to insert string in tree
+void TrieTree::insert(string word)
+{
+	TrieNode* node = root;
+	for (int i = 0; i < word.size(); i++)
+	{
+		if (!node->containKey(word[i]))				//If key is not present then we add the node
+		{
+			node->put(word[i], new TrieNode());		//IF that node is null then we create the node
+		}
+		node = node->get(word[i]);					//moves to reference trie
+	}
+	node->setEnd();									//This will return true
+}
+
+
+//Recursive function to print suggessions
+void TrieTree::Sugg(TrieNode* root, string currword)
+{
+	if (count < sugg_Limit)
+	{
+		if (root->flag)								 // found a string in Trie with the given prefix
+		{
+			strSuggessions[count] = currword;
+			count++;
+			present++;
+			cout << count << " : " << currword << endl;
+		}
+		for (int i = 0; i < 26; i++)
+		{
+			if (root->links[i])						// child node character value
+			{
+				char child = 'a' + i;
+				Sugg(root->links[i], currword + child);
+			}
+		}
+	}
+}
+
+
+//To select word from given suggessions
+void TrieTree::selectWord(string& str)
+{
+	int x = 0;
+	char pressed;
+	if (x == present)
+	{
+		cout << "No suggessions present!\nPress 2 or press anything else except 1\n";
+		return;
+	}
+	else
+	{
+		while (x < present)
+		{
+			system("clear");
+			cout << "Enter / for moving to next word\nEnter ; to select the word\n\n";
+			cout << "String --> " << str << endl << endl;
+			for (int i = 0; i < present; ++i)
+			{
+				cout << i + 1 << " : " << strSuggessions[i] << endl;
+			}
+			cin >> pressed;
+			while (pressed != '/' && pressed != ';')
+			{
+				cout << "Invalid key pressed\nEnter again : \n";
+				cin >> pressed;
+			}
+			if (pressed == '/')
+			{
+				str = strSuggessions[x];
+				x++;
+			}
+			else if (pressed == ';')
+			{
+				break;
+			}
+		}
+	}
+	if (x == present)						//If we proceeded to the last suggession then we will set out string to the last suggession
+	{
+		system("clear");
+		cout << "Enter / for moving to next word\nEnter ; to select the word\n\n";
+		cout << "String --> " << str << endl << endl;
+		for (int i = 0; i < present; ++i)
+		{
+			cout << i + 1 << " : " << strSuggessions[i] << endl;
+		}
+		str = strSuggessions[present - 1];
+	}
+}
+
+
+// print suggestions for given query prefix
+void TrieTree::GiveSuggessions(TrieNode* root, string word)
+{
+	count = 0;
+	present = 0;
+	int n = 0;
+	TrieNode* node = root;
+	for (int i = 0; i < word.size(); ++i)
+	{
+		if (!node->containKey(word[i]))         //If key is not contain then we add the node
+		{
+			return;                           //If already key contain then this will return false
+		}
+		node = node->get(word[i]);              //moves to reference trie
+	}
+	Sugg(node, word);
+}
+
+
+//------------------------------------Huffman Implementation-------------------------------------
+
+
+//Priority queue implementation
+
+
+//Constructor of priority queue node
+PQ_node::PQ_node()
+{
+	next = NULL;
+}
+
+
+//Constructor of priority queue
+P_Queue::P_Queue()
+{
+	queueSize = 0;
+	char a = 'a';
+	for (int i = 0; i < 26; i++)
+	{
+		queueArray[i] = char(a + i);
+		priority[i] = 0;
+	}
+}
+
+
+//Check if queue is empty
+bool P_Queue::IsEmpty()
+{
+	if (head == NULL)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+
+//inserting element in priority queue list
+void P_Queue::Insert(char ch, int num)
+{
+	PQ_node* curr = head;
+	PQ_node* temp = new PQ_node;
+	temp->data = ch;
+	temp->prior = num;
+	if (IsEmpty() == true)
+	{
+		head = temp;
+	}
+	else
+	{
+		while (curr->next != NULL)
+		{
+			curr = curr->next;
+		}
+		curr->next = temp;
+	}
+	if (head->next != NULL)
+	{
+		curr = head;
+		PQ_node* temp = curr->next;
+		while (curr != NULL)
+		{
+			while (temp != NULL)
+			{
+				if ((curr->prior < temp->prior))			//Sorting the priority queue list by priority
+				{
+					PQ_node* tempNode = new PQ_node;
+					tempNode->data = temp->data;
+					tempNode->prior = temp->prior;
+
+					temp->prior = curr->prior;
+					temp->data = curr->data;
+
+					curr->data = tempNode->data;
+					curr->prior = tempNode->prior;
+				}
+				temp = temp->next;
+			}
+			temp = head;
+			curr = curr->next;
+		}
+	}
+}
+
+
+//Applying bubble sort algorithim for sorting the queue arr
+void P_Queue::sort(char queuArray[], int priority[])
+{
+	int temp;
+	for (int i = 0; i < 26; ++i)
+	{
+		for (int j = 1; j < 26; ++j)
+		{
+			if (priority[j - 1] < priority[j])
+			{
+				temp = priority[j - 1];						//sorting the priority arr
+				priority[j - 1] = priority[j];
+				priority[j] = temp;
+
+				temp = queuArray[j - 1];					//sorting the queue arr by priority
+				queuArray[j - 1] = queuArray[j];
+				queuArray[j] = temp;
+			}
+		}
+	}
+}
+
+
+//Function to display the values of Priority queue list
+void P_Queue::display()
+{
+	PQ_node* curr = head;
+	while (curr != NULL)
+	{
+		cout << curr->data << "(" << curr->prior << ")  ";
+		curr = curr->next;
+	}
+	cout << endl;
+}
+
+
+//Main function which gets a string,its size and sort by priority and insert in list
+void P_Queue::get(string str, int size)
+{
+	if (head != NULL)
+	{
+		head = NULL;
+	}
+	for (int i = 0; i < size; i++)				// loop till Size of string
+	{
+		for (int j = 0; j < 26; j++)			// loop for total alphabets
+		{
+			if (str[i] == queueArray[j])
+			{
+				priority[j]++;
+			}
+		}
+	}
+	sort(queueArray, priority);	//Sorting both arrays
+	for (int i = 0; i < 26; i++)
+	{
+		if (priority[i] > 0)
+		{
+			queueSize++;
+		}
+	}
+	for (int i = 0; i < queueSize; ++i)
+	{
+		Insert(queueArray[i], priority[i]);		//Inserting an element by giving char and priority
+	}
+}
+
+
+//Minheap implementation
+
+
+//Constructor of MinHeap node
+Mnode::Mnode()
+{
+	left = right = NULL;
+}
+
+
+//Constructor of MinHeap
+MHeap::MHeap()
+{
+	int CharNum = 0;
+	int size = 0;
+}
+
+
+//to insert elements of priority queue in heap
+void MHeap::Insert(P_Queue obj)
+{
+	if (root != NULL)
+	{
+		root = NULL;
+	}
+	arr = new string[obj.queueSize];
+	size = obj.queueSize;
+	CharNum = obj.queueSize;
+	Mnode* curr = root;
+	for (int i = 0; i < obj.queueSize; ++i)
+	{
+		Mnode* temp = new Mnode;
+		temp->data = obj.queueArray[i];
+		temp->prior = obj.priority[i];
+		if (root == NULL)
+		{
+
+			root = temp;
+			curr = root;
+			curr->next = NULL;
+		}
+		else
+		{
+
+			temp->next = root;
+			root = temp;
+		}
+	}
+}
+
+
+//Function to enqueue node
+void MHeap::Enqueue(Mnode* obj)
+{
+	if (root == NULL)
+	{
+		root = obj;
+	}
+	else
+	{
+		Mnode* temp;
+		temp = obj;
+		temp->next = root;
+		root = temp;
+		size++;
+	}
+}
+
+
+//Function to dequeue node
+Mnode* MHeap::Dequeue()
+{
+	Mnode* del = root;
+	Mnode* temp = new Mnode;
+	temp->data = root->data;
+	temp->prior = root->prior;
+	temp->left = root->left;
+	temp->right = root->right;
+	root = root->next;
+	size--;
+	delete del;
+	return temp;
+}
+
+
+//Sorting list
+void MHeap::sort()
+{
+	Mnode* curr = root;
+	Mnode* temp = curr->next;
+	Mnode* currPrev = new Mnode;
+	while (curr->next != NULL)
+	{
+		if (curr->prior > temp->prior)
+		{
+			if (curr == root)
+			{
+				Mnode* tempNode = new Mnode;
+
+				tempNode->prior = curr->prior;
+				tempNode->data = curr->data;
+				tempNode->left = curr->left;
+				tempNode->right = curr->right;
+
+				tempNode->next = temp->next;
+				root = temp;
+				temp->next = tempNode;
+			}
+			else
+			{
+				Mnode* tempNode = new Mnode;
+
+				tempNode->prior = curr->prior;
+				tempNode->data = curr->data;
+				tempNode->left = curr->left;
+				tempNode->right = curr->right;
+
+				tempNode->next = temp->next;
+				currPrev->next = temp;
+				temp->next = tempNode;
+			}
+		}
+		currPrev = curr;
+		curr = curr->next;
+		temp = temp->next;
+	}
+}
+
+
+//function to implement the process of making huffman tree
+Mnode* MHeap::system()
+{
+	Mnode* Left, * Right;
+	Left = Dequeue();
+	Right = Dequeue();
+	Mnode* treeNode = new Mnode;
+	treeNode->left = Left;
+	treeNode->right = Right;
+	treeNode->prior = (Left->prior + Right->prior);
+	treeNode->data = '-';
+	return treeNode;
+}
+
+
+//Making tree and decreasing the priority queue
+void MHeap::HuffMan()
+{
+	while (size != 1)
+	{
+		Enqueue(system());
+		if (size == 0)
+		{
+			break;
+		}
+		sort();
+	}
+}
+
+
+//Function used to find codes for a character
+void MHeap::Search(Mnode* curr, string val, char ch, string& F)
+{
+	if (curr != NULL)
+	{
+		Search(curr->left, val + "0", ch, F);
+		if (curr->left == NULL && curr->right == NULL)
+		{
+			if (curr->data == ch)
+			{
+				F = val;
+			}
+		}
+		Search(curr->right, val + "1", ch, F);
+	}
+}
+
+
+//Function used to find codes of string alphaets using the above recursive function
+void MHeap::FindCode(string& s, char ch)
+{
+	Mnode* curr = root;
+	Search(curr, "", ch, s);
+}
+
+
+//function to assign codes from file to array
+void MHeap::AssignCodes(P_Queue obj, string str)
+{
+	codes.close();
+	codes.open("Table_Codes.txt", ios::out);
+	org.open("Original_Text.txt", ios::out);
+	encoded.close();
+	encoded.open("Encoded_Text.txt", ios::out);
+	for (int i = 0; i < CharNum; ++i)			//Making all codes null at start
+	{
+		arr[i] = "";
+	}
+	for (int i = 0; i < CharNum; ++i)			//Finding codes and storing them in array
+	{
+		FindCode(arr[i], obj.queueArray[i]);
+	}
+	for (int i = 0; i < CharNum; ++i)
+	{
+		if (i == CharNum - 1)
+		{
+			codes << obj.queueArray[i] << " " << arr[i];
+		}
+		else
+		{
+			codes << obj.queueArray[i] << " " << arr[i] << endl;
+		}
+
+	}
+	int size = str.size();
+	for (int i = 0; i < size; ++i)
+	{
+		if (str[i] == ' ')
+		{
+			org << ' ';
+			encoded << '-';
+		}
+		else
+		{
+			for (int j = 0; j < size; ++j)
+			{
+				if (str[i] == obj.queueArray[j])
+				{
+					org << str[i];
+					encoded << arr[j];
+				}
+			}
+		}
+	}
+	codes.close();
+	org.close();
+	encoded.close();
+}
+
+
+//Function to decode at start
+void MHeap::read2()
+{
+	int count = 0, i = 0;
+	int counter;
+	string str;
+	codes.close();
+	codes.open("Table_Codes.txt", ios::in);
+	while (!codes.eof())
+	{
+		getline(codes, str);
+		count++;
+	}
+	codes.close();
+	codes.open("Table_Codes.txt", ios::in);
+	string code;
+	char* chr = new char[count];
+	string* strr = new string[count];
+	while (!codes.eof())
+	{
+		codes >> chr[i];
+		codes >> strr[i];
+		i++;
+	}
+	codes.close();
+	encoded.close();
+	encoded.open("Encoded_Text.txt", ios::in);
+	/*while (!encoded.eof())
+	{
+		string str2 = "";
+		i = 0;
+		encoded >> str;
+		if (str[0] == '-')
+		{
+			i++;
+			cout << " ";
+			while (str[i] != '\0')
+			{
+				str2 += str[i];
+				i++;
+			}
+			str = str2;
+		}
+		for (int i = 0; i < count; ++i)
+		{
+			if (strr[i] == str)
+			{
+				cout << chr[i];
+				break;
+			}
+		}
+	}*/
+	i = 0;
+	encoded >> str;
+	counter = str.size();
+	Mnode* curr = root;
+	string temp, decoded = "";
+	string strrr = "";
+	while (i <= counter)
+	{
+		if (curr->left == NULL && curr->right == NULL)
+		{
+			for (int i = 0; i < count; ++i)
+			{
+				if (strr[i] == strrr)
+				{
+					decoded += chr[i];
+					break;
+				}
+			}
+			//temp = curr->data;
+			//decoded += strrr;
+			curr = root;
+		}
+		if (str[i] == '0')
+		{
+			curr = curr->left;
+			strrr = strrr + "0";
+		}
+		else if (str[i] == '1')
+		{
+			curr = curr->right;
+			strrr = strrr + "1";
+		}
+		else if (str[i] == '-')
+		{
+			decoded = decoded + " ";
+		}
+		i++;
+	}
+	cout << decoded;
+}
+
+
+
+//Function to decode the text from the file
+void MHeap::read()
+{
+	int count = 0, i = 0;
+	int counter;
+	string str;
+	codes.close();
+	codes.open("Table_Codes.txt", ios::in);
+	while (!codes.eof())
+	{
+		getline(codes, str);
+		count++;
+	}
+	codes.close();
+	codes.open("Table_Codes.txt", ios::in);
+	string code;
+	char* chr = new char[count];
+	string* strr = new string[count];
+	while (!codes.eof())
+	{
+		codes >> chr[i];
+		codes >> strr[i];
+		i++;
+	}
+	codes.close();
+	encoded.close();
+	encoded.open("Encoded_Text.txt", ios::in);
+	/*while (!encoded.eof())
+	{
+		string str2 = "";
+		i = 0;
+		encoded >> str;
+		if (str[0] == '-')
+		{
+			i++;
+			cout << " ";
+			while (str[i] != '\0')
+			{
+				str2 += str[i];
+				i++;
+			}
+			str = str2;
+		}
+		for (int i = 0; i < count; ++i)
+		{
+			if (strr[i] == str)
+			{
+				cout << chr[i];
+				break;
+			}
+		}
+	}*/
+	i = 0;
+	encoded >> str;
+	counter = str.size();
+	Mnode* curr = root;
+	string temp, decoded = "";
+	while (i <= counter)
+	{
+		if (curr->left == NULL && curr->right == NULL)
+		{
+			temp = curr->data;
+			decoded += temp;
+			curr = root;
+		}
+		if (str[i] == '0')
+		{
+			curr = curr->left;
+		}
+		else if (str[i] == '1')
+		{
+			curr = curr->right;
+		}
+		else if (str[i] == '-')
+		{
+			decoded = decoded + " ";
+		}
+		i++;
+	}
+	cout << decoded;
+}
+
+
+//Function to get the string from the file
+void getstr(string& str)
+{
+	MHeap obj;
+	string temp;
+	obj.org.close();
+	obj.org.open("Original_Text.txt", ios::in);
+	if (!obj.org)
+	{
+		cout << "File not found!\n";
+	}
+	else
+	{
+		obj.org >> temp;
+		str = str + temp;
+		while (!obj.org.eof())
+		{
+			str = str + " ";
+			obj.org >> temp;
+			str = str + temp;
+		}
+	}
+}
+
+
+//Function to display the encoded test in the file
+void DisplayEncoded()
+{
+	string str, temp;
+	MHeap obj;
+	obj.encoded.close();
+	obj.encoded.open("Encoded_Text.txt", ios::in);
+	if (!obj.encoded)
+	{
+		cout << "File not found!\n";
+	}
+	else
+	{
+		while (!obj.encoded.eof())
+		{
+			obj.encoded >> temp;
+			str += temp;
+		}
+	}
+	cout << str << endl;
+}
+
+
+
+//------------------------------------------------------------------Start & Process------------------------------------------------------------------------
+
+
+
+//Main Function for text editor
+void process()
+{
+	TrieTree obj;
+	MHeap Mobj;
+	P_Queue Pobj;
+	string R, str1, search, str = "", str2, choice;
+	string Final = "";
+	int h = 0;
+	ifstream wordsfile;
+	wordsfile.open("outfile.txt");
+	while (!wordsfile.eof())
+	{
+		int TT = 1;
+		int s;
+		wordsfile >> R;
+		s = R.size();
+		for (int i = 0; i < s; ++i)
+		{
+			if (R[i] < 'a' || R[i]>'z')
+			{
+				TT = 0;
+			}
+		}
+		if (TT == 1)
+		{
+			obj.insert(R);
+		}
+		h++;
+	}
+	wordsfile.close();
+	cout << "Enter 1 if you want to decode the last text\n";
+	cin >> choice;
+	char c;
+	if (choice == "1")
+	{
+		Mobj.encoded.open("Encoded_Text.txt", ios::in);
+		if (Mobj.encoded)
+		{
+			Mobj.encoded >> c;
+			if (Mobj.encoded.eof())
+			{
+				cout << "File is empty\nPress anything to continue";
+				cin.get();
+			}
+			else
+			{
+				getstr(Final);
+				int S = Final.length();
+				Pobj.get(Final, S);
+				Mobj.Insert(Pobj);
+				Mobj.HuffMan();
+				cout << "Encoded text is : ";
+				DisplayEncoded();
+				cout << "Decoded text : ";
+				Mobj.read();
+				cout << endl << "Press anything to continue";
+				cin.get();
+				system("clear");
+			}
+		}
+		else
+		{
+			cout << "File not opened\nPress anything to continue";
+			cin.get();
+		}
+	}
+	else
+	{
+		cout << "Press anything to continue";
+		cin.get();
+	}
+	Final = "";
+	system("clear");
+	cout << "Enter First Letter of string : " << str;
+	cin >> str2;
+	while ((str2.size() > 1) || (str2[0] < 'a' || str2[0]>'z'))
+	{
+		if (str2.size() > 1)
+		{
+			cout << "Enter a character not a string\n";
+		}
+		if (str2[0] < 'a' || str2[0]>'z')
+		{
+			cout << "Enter only from a-z";
+		}
+		cin >> str2;
+	}
+	str = str + str2;
+	obj.GiveSuggessions(obj.root, str);
+	do
+	{
+		cout << "---> Press 1 if you want to select from these suggessions\n---> Press 2 to add more characters\n---> Press any key to complete the word\n";
+		cin >> choice;
+		if (choice == "1")
+		{
+			obj.selectWord(str);
+			cout << "\nEntered string is : " << str << endl;
+		}
+		else if (choice == "2")
+		{
+			system("clear");
+			cout << "Enter string : " << Final + str;
+			cin >> str2;
+			while ((str2.size() > 1) || (str2[0] < 'a' || str2[0]>'z'))
+			{
+				if (str2.size() > 1)
+				{
+					cout << "Enter a character not a string\n";
+				}
+				if (str2[0] < 'a' || str2[0]>'z')
+				{
+					cout << "Enter only from a-z";
+				}
+				cin >> str2;
+			}
+			str += str2;
+			obj.GiveSuggessions(obj.root, str);
+		}
+		else
+		{
+			cout << "\nEntered string is : " << str << endl;
+			cout << "Enter = to complete string\nEnter 1 to Add another word\n\n";
+			cin >> choice;
+			while (choice != "=" && choice != "1")
+			{
+				cout << "Invalid key pressed\nEnter again : \n";
+				cin >> choice;
+			}
+			if (choice == "=")
+			{
+				cout << "String completed\n";
+				Final += str;
+				break;
+			}
+			else
+			{
+				Final += str + " ";
+				str = "";
+				system("clear");
+				cout << "Enter string : " << Final;
+				cin >> str2;
+				while (str2 < "a" || str2 > "z")
+				{
+					cout << "Enter from alphabet a to z\n";
+					cin >> str2;
+				}
+				while (str2.size() > 1)
+				{
+					cout << "Enter a character not a string\n";
+					cin >> str2;
+					while (str2 < "a" || str2 > "z")
+					{
+						cout << "Enter from alphabet a to z\n";
+						cin >> str2;
+					}
+				}
+				str += str2;
+				obj.GiveSuggessions(obj.root, str);
+			}
+		}
+	} while (choice == "1" || choice == "2");
+	cout << "\nEntered string is : " << Final << "\nPress anything to continue";
+	cin.get();
+	system("clear");
+	int S = Final.length();
+	cout << "Entered string is : " << Final << endl << "Now encoding this into file : \n";
+	Pobj.get(Final, S);
+	Mobj.Insert(Pobj);
+	Mobj.HuffMan();
+	Mobj.AssignCodes(Pobj, Final);
+	cout << "Encoded Text : ";
+	DisplayEncoded();
+	cout << "Enter 1 if you want to decode : \n";
+	cin >> choice;
+	if (choice == "1")
+	{
+		Mobj.read();
+		cout << endl;
+	}
+}
+
+
+//Function for introductory display
+void start()
+{
+	char arr1[19][50] =
+	{
+		{ ' ' ,' ' ,' ' , '*' ,'*','*','*','*',' ','*','*','*',' ','*',' ','*',' ','*', '*','*', '*','*',' ',' ','*','*','*',' ','*','*',' ',' ','*','*','*',' ','*' ,'*','*','*','*',' ',' ','*',' ',' ','*','*',' ',' '}
+		,{ ' ' ,' ' ,' ' ,'*' ,'*','*','*','*',' ','*','*','*',' ','*',' ','*',' ','*', '*','*', '*','*',' ',' ','*','*','*',' ','*','*','-',' ','*','*','*',' ','*' ,'*','*','*','*',' ','_','*','-',' ','*','*','-',' '}
+		,{ ' ' ,' ' ,' ' ,' ' ,' ','*',' ',' ',' ','*',' ',' ',' ','*',' ','*',' ',' ' ,' ','*',' ',' ',' ',' ', '*',' ',' ',' ','*',' ','*',' ',' ','*',' ',' ',' ' ,' ','*',' ',' ',' ','*',' ','*',' ','*',' ','*',' ' }
+		,{ ' ' ,' ' ,' ' ,' ' ,' ','*',' ',' ',' ','*',' ',' ',' ','*',' ','*',' ',' ' ,' ','*',' ',' ',' ',' ', '*',' ',' ',' ','*',' ','*',' ',' ','*',' ',' ',' ' ,' ','*',' ',' ',' ','*',' ','*',' ','*',' ','*',' ' }
+		,{ ' ' ,' ' ,' ' ,' ' ,' ','*',' ',' ',' ','*','*',' ',' ',' ','*',' ',' ',' ' ,' ','*',' ',' ',' ',' ', '*','*',' ',' ','*',' ','*',' ',' ','*',' ',' ',' ' ,' ','*',' ',' ',' ','*',' ','*',' ','*','*','-',' ' }
+		,{ ' ' ,' ' ,' ' ,' ' ,' ','*',' ',' ',' ','*',' ',' ',' ','*',' ','*',' ',' ' ,' ','*',' ',' ',' ',' ', '*',' ',' ',' ','*',' ','*',' ',' ','*',' ',' ',' ' ,' ','*',' ',' ',' ','*',' ','*',' ','*',' ','*',' ' }
+		,{ ' ' ,' ' ,' ' ,' ' ,' ','*',' ',' ',' ','*',' ',' ',' ','*',' ','*',' ',' ' ,' ','*',' ',' ',' ',' ', '*',' ',' ',' ','*',' ','*',' ',' ','*',' ',' ',' ' ,' ','*',' ',' ',' ','*',' ','*',' ','*',' ','*',' ' }
+		,{ ' ' ,' ' ,' ' ,' ' ,' ','*',' ',' ',' ','*','*','*',' ','*',' ','*',' ',' ' ,' ','*',' ',' ',' ',' ', '*','*','*',' ','*','*','-',' ','*','*','*',' ',' ' ,' ','*',' ',' ',' ','_','*','-',' ','*',' ','*',' ' }
+		,{ ' ' ,' ' ,' ' ,' ' ,' ','*',' ',' ',' ','*','*','*',' ','*',' ','*',' ',' ' ,' ','*',' ',' ',' ',' ', '*','*','*',' ','*','*',' ',' ','*','*','*',' ',' ' ,' ','*',' ',' ',' ',' ','*',' ',' ','*',' ','*',' ' }
+		,{ ' ' ,' ' ,' ' ,' ' ,' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ' ,' ',' ',' ',' ',' ',' ', ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ' ,' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ' }
+		,{ ' ' ,' ' ,' ' ,' ' ,' ',' ',' ',' ',' ',' ',' ',' ','*','*','-',' ','*','*', ' ',' ',' ' ,'*',' ',' ','_','*','*','*',' ', '*','*','*',' ','_','*','-',' ','*','*','*','*','*',' ',' ',' ',' ',' ',' ',' ',' '}
+		,{ ' ' ,' ' ,' ' ,' ' ,' ',' ',' ',' ',' ',' ',' ',' ','*','*','*',' ','*', '*', '-',' ','_' ,'*','-',' ','_','*','*','*',' ', '*','*','*',' ','*','*','*',' ','*','*','*','*','*',' ',' ',' ',' ',' ',' ',' ',' '}
+		,{ ' ' ,' ' ,' ' ,' ' ,' ',' ',' ',' ',' ',' ',' ',' ','*',' ','*',' ','*',' ','*',' ','*',' ','*',' ',' ',' ','*',' ',' ', '*',' ',' ',' ','*',' ','*',' ',' ',' ','*',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '}
+		,{ ' ' ,' ' ,' ' ,' ' ,' ',' ',' ',' ',' ',' ',' ',' ','*',' ','*',' ','*',' ','*',' ','*',' ','*',' ',' ',' ','*',' ',' ', '*',' ',' ',' ','*',' ',' ',' ',' ',' ','*',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '}
+		,{ ' ' ,' ' ,' ' ,' ' ,' ',' ',' ',' ',' ',' ',' ',' ','*','*','-',' ','*','*',' ',' ','*',' ','*',' ',' ',' ','*',' ',' ', '*','*',' ',' ','*',' ',' ',' ',' ',' ','*',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '}
+		,{ ' ' ,' ' ,' ' ,' ' ,' ',' ',' ',' ',' ',' ',' ',' ','*',' ',' ',' ','*',' ','*',' ','*',' ','*',' ','*',' ','*',' ',' ', '*',' ',' ',' ','*',' ',' ',' ',' ',' ','*',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '}
+		,{ ' ' ,' ' ,' ' ,' ' ,' ',' ',' ',' ',' ',' ',' ',' ','*',' ',' ',' ','*',' ','*',' ','*',' ','*',' ','*',' ','*',' ',' ', '*',' ',' ',' ','*',' ','*',' ',' ',' ','*',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '}
+		,{ ' ' ,' ' ,' ' ,' ' ,' ',' ',' ',' ',' ',' ',' ',' ','*',' ',' ',' ','*',' ','*',' ','_','*','-',' ','*','*','*',' ',' ', '*','*','*',' ','*','*','*',' ',' ',' ','*',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '}
+		,{ ' ' ,' ' ,' ' ,' ' ,' ',' ',' ',' ',' ',' ',' ',' ','*',' ',' ',' ','*',' ','*',' ',' ','*',' ',' ','_','*','-',' ',' ', '*','*','*',' ','_','*','-',' ',' ',' ','*',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '}
+	};
+	system("clear");
+	cout << "\n\n\n\n\n\n\n\n\n\n";
+	cout << "\t\t\t\t\t\t\tLOADING\n\t\t\t\t\t";
+	for (int i = 0; i < 36; i++)
+	{
+		usleep(90000);
+		cout.flush();
+		cout << '.';
+	}
+	usleep(2000000);
+	system("clear");
+	cout << endl;
+	for (int i = 0; i < 19; i++)
+	{
+		for (int j = 0; j < 50; j++)
+		{
+			if (arr1[i][j] == '*')
+			{
+				cout << '*' << '*';
+			}
+			else if (arr1[i][j] == '_')
+			{
+				cout << " " << '*';
+			}
+			else if (arr1[i][j] == '-')
+			{
+				cout << '*' << " ";
+			}
+			else
+			{
+				cout << "  ";
+			}
+		}
+		cout.flush();
+		usleep(90000);
+		cout << endl;
+	}
+	cout << "\n\t\t\t\t\tPress something to continue";
+	cin.get();
+}
+
+
+
+//------------------------------------------------------------------Main-------------------------------------------------------------------------
+
+
+
+//Main / Driver program
+int main()
+{
+	start();					//Introductory Display
+	system("clear");
+	process();					//Text Editor function
+	cout << "Press anything to continue";
+	cin.get();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////3.	Calculator
+//////////////////////////////////////////////////////CODE:
+
+
+
+#include<iostream>
+#include<cmath>
+using namespace std;
+void Calculator(float x, float y, char choice)
+{
+	if (choice == '1')
+	{
+		cout << "Addition\n\nx + y = " << x + y << endl;
+	}
+	else if (choice == '2')
+	{
+		cout << "Subtraction\n\nx - y = " << x - y << endl;
+	}
+	else if (choice == '3')
+	{
+		cout << "Multiplication\n\nx * y = " << x * y << endl;
+	}
+	else if (choice == '4')
+	{
+		cout << "Division\n\nx / y = " << x / y << endl;
+	}
+	else if (choice == '5')
+	{
+		cout << "Power\n\nx ^ y = " << pow(x,y) << endl;
+	}
+}
+int main()
+{
+	system("clear");
+	cout << "\n\n\t\t********************\n";
+	cout << "\t\t**** Calculator ****\n";
+	cout << "\t\t********************\n\n";
+	float x, y;
+	char choice;
+	cout << "1: Addition\n";
+	cout << "2: Subtraction\n";
+	cout << "3: Multiplication\n";
+	cout << "4: Division\n";
+	cout << "5: Power\n";
+	cout << "Input your choice from above : ";
+	cin >> choice;
+	if (choice >= '1' && choice <= '5')
+	{
+		cout << "Enter number x : ";
+		cin >> x;
+		cout << "Enter number y : ";
+		cin >> y;
+		Calculator(x, y, choice);
+	}
+	else
+	{
+		cout << "Invalid Input!";
+	}
+}
+
+
+
+
+
+
+//////////////////////////////////////////////////////4.	Play Music
+//////////////////////////////////////////////////////CODE:  
+
+
+#include <iostream>
+#include <fstream>
+#include <unistd.h>
+using namespace std;
+int main()
+{
+	string str;
+	cout << "Enter name of Music file : ";
+	cin >> str;
+	str = str+".mp3";
+       	ifstream file(str.c_str());
+    	if (file.good())
+    	{
+		cout << "Now Music is about to start\nTo stop it, Press q key aand to just pause it, Press space key\n\n";
+		usleep(3000000);
+    	    	str = "mpg123 " + str;
+		const char* cmdStr = str.c_str();
+		system(cmdStr);
+    	} 
+    	else 
+    	{
+        	cout << "File not found\n";
+    	}
+	return 0;
+}
+
+
+
+
+//////////////////////////////////////////////////////5.	Play Video
+//////////////////////////////////////////////////////CODE:
+
+
+#include <iostream>
+#include <fstream>
+#include <unistd.h>
+using namespace std;
+int main()
+{
+	string str;
+	cout << "Enter name of Music file : ";
+	cin >> str;
+	str = str + ".mp4";
+	ifstream file(str.c_str());
+	if (file.good())
+	{
+		cout << "Now Video is about to start\n\n";
+		usleep(3000000);
+		str = "mpv " + str;
+		const char* cmdStr = str.c_str();
+		system(cmdStr);
+	}
+	else
+	{
+		cout << "File not found\n";
+	}
+	return 0;
+}
+
+
+
+//////////////////////////////////////////////////////6.	Open Browser
+//////////////////////////////////////////////////////CODE:  
+
+
+
+#include <iostream>
+#include <unistd.h>
+#include <fstream>
+using namespace std;
+int main()
+{
+	cout << "\nOpening Fireox Browser\n";
+	string str;
+	usleep(2000000);
+	str = "firefox";
+	const char* cmdStr = str.c_str();
+	system(cmdStr);
+	cout << "\nBrowser Opened\n";
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////7.	Clock
+//////////////////////////////////////////////////////CODE:  
+
+
+
+#include <iostream>
+#include <fstream>
+#include <unistd.h>
+using namespace std;
+int main()
+{
+	string str;
+	cout << "Clock will display in few seconds : \nNote: Pressing ctrl+c together will close the clock\n\n";
+	usleep(5000000);
+    	str = "watch -t -n 1 date +\"%T\"";
+	const char* cmdStr = str.c_str();
+	system(cmdStr);
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////8.	Create File
+//////////////////////////////////////////////////////CODE:  
+
+
+
+#include <iostream>
+using namespace std;
+int main()
+{
+	string str;
+	cout << "Enter name of file with extension e.g abc.cpp : ";
+	cin >> str;
+	cout << "Creating a file ..";
+	str = "touch " + str;
+	const char *cmdStr = str.c_str();
+	system(cmdStr);
+	cout << "\nFile Created!\n";
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////9.	Open File
+////////////////////////////////////////////////////////////////////////////////////////////////////////////CODE:  
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+int main()
+{
+	string str;
+	cout << "Enter name of file you want to open (with extension e.g abc.cpp) : ";
+	cin >> str;
+	ifstream file(str);    
+	if (file.is_open()) 
+	{
+        	cout << "File found!" << endl;
+        	file.close();
+        	int n;
+        	cout << "Select from options below : \n1: Opn in nano mode\n2: Open in text editor\n\nEnter your choice";
+		cin >> n;
+		if (n == 1)
+		{
+			cout << "Opening a file ..";
+			str = "nano " + str;
+			const char* cmdStr = str.c_str();
+			system(cmdStr);
+			cout << "\nFile Opened!\n";
+		}
+		else if (n == 2)
+		{
+			cout << "Opening a file ..";
+			str = "xdg-open " + str;
+			const char* cmdStr = str.c_str();
+			system(cmdStr);
+			cout << "\nFile Opened!\n";
+		}
+    	} 
+    	else 
+    	{
+        	cout << "File not found!" << endl;
+    	}
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ //////////////////////////////////////////////////////  10.Delete File
+//////////////////////////////////////////////////////CODE:  
+#include <iostream>
+#include <fstream>
+using namespace std;
+int main()
+{
+	string str1,str;
+	char choice;
+	cout << "Enter name of file you want to delete (with extension e.g abc.cpp) : ";
+	cin >> str1;
+	ifstream file(str1);    
+	if (file.is_open()) 
+	{
+        	cout << "File found!" << endl;
+        	file.close();
+        	cout << "Note: The file will be PERMANENTLY DELETED.\nAre you sure? \nif yes, press 1 else press anyother key : ";
+		cin >> choice;
+        	if (choice == '1')
+		{
+			cout << "Deleting file ..";
+			str = "rm " + str1;
+			const char* cmdStr = str.c_str();
+			system(cmdStr);
+			cout << "\nFile Deleted permanently\n";
+		}
+		else
+		{
+			cout << "File not deleted..\n";
+		}
+    	} 
+    	else 
+    	{
+        	cout << "Source File not found!" << endl;
+    	}
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////11.Copy File
+//////////////////////////////////////////////////////CODE:  
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+int main()
+{
+	string str1,str2,str;
+	cout << "Enter name of file you want to copy (with extension e.g abc.cpp) : ";
+	cin >> str1;
+	ifstream file(str1);    
+	if (file.is_open()) 
+	{
+        	cout << "Source File found!" << endl;
+        	file.close();
+        	cout << "Enter Destination file name (with extension e.g abc.cpp) in which you want to copy : ";
+		cin >> str2;
+		int n;
+        	cout << "Select from options below : \n1: Copy and overwrite content (if any)\n2: Copy and append (if any)\n\nEnter your choice";
+		cin >> n;
+		if (n == 1)
+		{
+			cout << "Copying file ..";
+			str = "cp " + str1 + " " + str2;
+			const char* cmdStr = str.c_str();
+			system(cmdStr);
+			cout << "\nFile Copied!\n";
+		}
+		else if (n == 2)
+		{
+			cout << "Copying file ..";
+			str = "cat " + str1 + " >> " + str2;
+			const char* cmdStr = str.c_str();
+			system(cmdStr);
+			cout << "\nFile Copied!\n";
+		}
+    	} 
+    	else 
+    	{
+        	cout << "Source File not found!" << endl;
+    	}
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////12.BattleShip
+//////////////////////////////////////////////////////CODE:  
+
+
+
+#include<iostream>
+#include<iomanip>
+#include<cstdlib>
+using namespace std;
+
+void main_menu(), Play_game(), Credits(), Rules(), Score(), easy_PvP(), medium_PvP(), hard_PvP();
+void attack_PvP(int size, char grid_p1[][15], char grid_p2[][15], char attack_P1[][15], char attack_P2[][15]);
+int P1score = 0, P2score = 0;
+int main()
+{
+	system("clear");
+	cout << "\n\n\t\t\t\t     **********WELCOME TO BATTLE SHIP**********" << endl << endl << endl;
+	cout << "        MAIN MENU" << endl << endl;
+	main_menu();
+}
+
+bool winning_condition(int size, char grid[][15], char attack[][15])
+{
+	for (int i = 0; i < size; i++)
+	{
+		for (int c = 0; c < size; c++)
+		{
+			if (grid[i][c] == 'C' || grid[i][c] == 'c' || grid[i][c] == 'D' || grid[i][c] == 'B' || grid[i][c] == 'S')
+			{
+				if (attack[i][c] != 'H')
+				{
+					return false;
+				}
+			}
+		}
+	}
+	return true;
+}
+void main_menu() // Main menu to choose Game play, Credits, Rules or Score
+{
+	int choice;
+	cout << "    Press 1 to PLAY GAME" << endl;
+	cout << "    Press 2 for CREDITS" << endl;
+	cout << "    Press 3 for RULES" << endl;
+	cout << "    Any other for PROGRAM TERMINATION" << endl;
+	cin >> choice;
+	cout << endl;
+	switch (choice)
+	{
+	case(1):
+	{
+		Play_game();
+		break;
+	}
+	case(2):
+	{
+		Credits();
+		break;
+	}
+	case(3):
+	{
+		Rules();
+		break;
+	}
+	default:
+	{
+		cout << "Program is terminated!";
+		break;
+	}
+	}
+}
+
+
+void DisplayArray(char arr[][15], int size) // Dispalying the array
+{
+	system("clear");
+	cout << "\t\t\t\t";
+	for (int k = 0; k < size; k++)
+	{
+		cout << k + 1 << " " << setw(4);
+	}
+	cout << endl;
+	for (int i = 0; i < size; i++)
+	{
+		cout << "\t\t\t" << i + 1 << "\t";
+		for (int c = 0; c < size; c++)
+		{
+			cout << arr[i][c] << "    ";
+		}
+		cout << endl;
+	}
+}
+
+
+void checkcondition(char grid_P[][15], int N, int TS, char ch, int numofships, char fill) // Checking if the ship can be placed there or not for player
+{
+	int x, y;
+	int count = 1;
+	while (count <= numofships)
+	{
+		cout << "For number :" << count << endl;
+		if (ch == 'h' || ch == 'H')
+		{
+			cout << "Enter column number\n";
+			cin >> y;
+			while (y > (TS - N) + 1)
+			{
+				cout << "Invalid input ! Crossed the size of array.\nInput again\n";
+				cin >> y;
+			}
+			cout << "Enter row number : \n";
+			cin >> x;
+			for (int i = 0; i < N; i++)
+			{
+				for (int j = y; j <= (y + N) - 1; j++)
+				{
+					grid_P[x - 1][j - 1] = fill;
+				}
+			}
+		}
+		else if (ch == 'v' || ch == 'V')
+		{
+			cout << "Enter row number\n";
+			cin >> x;
+			while (x > (TS - N) + 1)
+			{
+				cout << "Invalid input ! Crossed the size of array.\nInput again\n";
+				cin >> x;
+			}
+			cout << "Enter Column number : \n";
+			cin >> y;
+			for (int i = 0; i < N; i++)
+			{
+				for (int j = x; j <= (x + N) - 1; j++)
+				{
+					grid_P[j - 1][y - 1] = fill;
+				}
+			}
+		}
+		count++;
+	}
+}
+
+
+
+void Play_game() // Menu to choose between player vs player or player vs machine
+{
+	int choice;
+	cout << "    PLAYER VS PLAYER" << endl;
+	cout << "    Press 1 for EASY mode" << endl;
+	cout << "    Press 2 for MEDIUM mode" << endl;
+	cout << "    Press 3 for HARD mode" << endl;
+	cout << "    Any other for termination" << endl;
+	cin >> choice;
+	switch (choice)
+	{
+	case(1):
+	{
+		easy_PvP();
+		break;
+	}
+	case(2):
+	{
+		medium_PvP();
+		break;
+	}
+	case(3):
+	{
+		hard_PvP();
+		break;
+	}
+	default:
+	{
+		cout << "Invalid Input";
+		break;
+	}
+	}
+}
+
+void attack_PvP(int size, char grid_p1[][15], char grid_p2[][15], char attack_P1[][15], char attack_P2[][15]) // Attack of player 1 on player 2 
+{
+	int x, y;
+	while (true)
+	{
+		cout << "Player 1 turn\n";
+		cout << "Enter row number : ";
+		cin >> x;
+		cout << "Enter column number : ";
+		cin >> y;
+		while (x > size || y > size)
+		{
+			cout << endl << "Input again!" << endl;
+			cout << "Enter row number : ";
+			cin >> x;
+			cout << "Enter column number : ";
+			cin >> y;
+		}
+		x = x - 1;
+		y = y - 1;
+		if (grid_p2[x][y] == 'c' || grid_p2[x][y] == 'S' || grid_p2[x][y] == 'B' || grid_p2[x][y] == 'D' || grid_p2[x][y] == 'C')
+		{
+			attack_P1[x][y] = 'H';
+		}
+		else
+		{
+			attack_P1[x][y] = '*';
+		}
+		DisplayArray(attack_P1, size);
+		if (winning_condition(size, grid_p2, attack_P1) == true)
+		{
+			cout << "\t\t\tPlayer 1 wins!";
+			break;
+		}
+
+		cout << "Player 2 turn\n";
+
+		cout << "Enter row number : ";
+		cin >> x;
+		cout << "Enter column number : ";
+		cin >> y;
+		while (x > size || y > size)
+		{
+			cout << endl << "Input again!" << endl;
+			cout << "Enter row number : ";
+			cin >> x;
+			cout << "Enter column number : ";
+			cin >> y;
+		}
+		x = x - 1;
+		y = y - 1;
+		if (grid_p1[x][y] == 'c' || grid_p1[x][y] == 'S' || grid_p1[x][y] == 'B' || grid_p1[x][y] == 'D' || grid_p1[x][y] == 'C')
+		{
+			attack_P2[x][y] = 'H';
+		}
+		else
+		{
+			attack_P2[x][y] = '*';
+		}
+		DisplayArray(attack_P2, size);
+		if (winning_condition(size, grid_p1, attack_P2) == true)
+		{
+			cout << "\t\t\tPlayer 2 wins!";
+			break;
+		}
+	}
+}
+
+void easy_PvP()
+{
+	int count, x, y;
+	char ch;
+	const int size = 15;
+	char grid_p1[size][size];
+	char grid_p2[size][size];
+	//player 1 setting the ships
+	for (int i = 0; i < 8; i++) // Making a 8x8 grid
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			grid_p1[i][j] = '.';
+		}
+	}
+	DisplayArray(grid_p1, 8);
+	cout << "\nPlayer 1\n\n";
+	cout << "Enter orientation : (h/v) \n";
+	cin >> ch;
+	while (ch != 'h' && ch != 'H' && ch != 'v' && ch != 'V')
+	{
+		cout << "Invalid orientation! \nEnter again (h/v)\n";
+		cin >> ch;
+	}
+	cout << "Enter the cordinates where you want to put (8x1) carrier : \n";
+	count = 1;
+	while (count <= 2)          // For taking 2 carriers in easy mode
+	{
+		cout << "For Carrier :" << count << endl;
+		if (ch == 'h' || ch == 'H')
+		{
+			y = 0;
+			cout << "Enter row number : \n";
+			cin >> x;
+			for (int i = 0; i < 8; i++)
+			{
+				for (int j = y; j < 8; j++)
+				{
+					grid_p1[x - 1][j] = 'C';
+				}
+			}
+		}
+		else if (ch == 'v' || ch == 'V')
+		{
+			x = 0;
+			cout << "Enter Column number : \n";
+			cin >> y;
+			for (int i = 0; i < 8; i++)
+			{
+				for (int j = x; j < 8; j++)
+				{
+					grid_p1[j][y - 1] = 'C';
+				}
+			}
+		}
+		count++;
+	}
+	DisplayArray(grid_p1, 8);
+	cout << "Enter the cordinates where you want to put (5x1) battleship : \n";
+	checkcondition(grid_p1, 5, 8, ch, 2, 'B');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p1, 8);
+
+	cout << "Enter the cordinates where you want to put (4x1) Cruiser : \n";
+	checkcondition(grid_p1, 4, 8, ch, 2, 'c');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p1, 8);
+
+	cout << "Enter the cordinates where you want to put (3x1) Submarine : \n";
+	checkcondition(grid_p1, 3, 8, ch, 2, 'S');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p1, 8);
+
+	cout << "Enter the cordinates where you want to put (2x1) Destroyer : \n";
+	checkcondition(grid_p1, 2, 8, ch, 2, 'D');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p1, 8);
+
+	//Player 2 setting the ships
+	for (int i = 0; i < 8; i++) // Making a 8x8 grid
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			grid_p2[i][j] = '.';
+		}
+	}
+	DisplayArray(grid_p2, 8);
+	cout << "\nPlayer 2\n\n";
+	cout << "Enter orientation : (h/v) \n";
+	cin >> ch;
+	while (ch != 'h' && ch != 'H' && ch != 'v' && ch != 'V')
+	{
+		cout << "Invalid orientation! \nEnter again (h/v)\n";
+		cin >> ch;
+	}
+	cout << "Enter the cordinates where you want to put (8x1) carrier : \n";
+	count = 1;
+	while (count <= 2)          // For taking 2 carriers in easy mode
+	{
+		cout << "for Carrier :" << count << endl;
+		if (ch == 'h' || ch == 'H')
+		{
+			y = 0;
+			cout << "Enter row number : \n";
+			cin >> x;
+			for (int i = 0; i < 8; i++)
+			{
+				for (int j = y; j < 8; j++)
+				{
+					grid_p2[x - 1][j] = 'C';
+				}
+			}
+		}
+		else if (ch == 'v' || ch == 'V')
+		{
+			x = 0;
+			cout << "Enter Column number : \n";
+			cin >> y;
+			for (int i = 0; i < 8; i++)
+			{
+				for (int j = x; j < 8; j++)
+				{
+					grid_p2[j][y - 1] = 'C';
+				}
+			}
+		}
+		count++;
+	}
+	DisplayArray(grid_p2, 8);
+	cout << "Enter the cordinates where you want to put (5x1) battleship : \n";
+	checkcondition(grid_p2, 5, 8, ch, 2, 'B');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p2, 8);
+
+	cout << "Enter the cordinates where you want to put (4x1) Cruiser : \n";
+	checkcondition(grid_p2, 4, 8, ch, 2, 'c');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p2, 8);
+
+	cout << "Enter the cordinates where you want to put (3x1) Submarine : \n";
+	checkcondition(grid_p2, 3, 8, ch, 2, 'S');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p2, 8);
+
+	cout << "Enter the cordinates where you want to put (2x1) Destroyer : \n";
+	checkcondition(grid_p2, 2, 8, ch, 2, 'D');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p2, 8);
+
+
+	char attack_P1[size][size];
+	char attack_P2[size][size];
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			attack_P1[i][j] = '.';
+			attack_P2[i][j] = '.';
+		}
+	}
+	DisplayArray(attack_P1, 8);
+	cout << "ITS TIME TO ATTACK" << endl;
+	attack_PvP(8, grid_p1, grid_p2, attack_P1, attack_P2);
+}
+
+void medium_PvP()
+{
+	char ch;
+	const int size = 15;
+	char grid_p1[size][size];
+	char grid_p2[size][size];
+	cout << "\t\t\tPlayer 1\n\n";                      //player 1 setting the ships
+	for (int i = 0; i < 12; i++) // Making a 8x8 grid
+	{
+		for (int j = 0; j < 12; j++)
+		{
+			grid_p1[i][j] = '.';
+		}
+	}
+	DisplayArray(grid_p1, 12);
+	cout << "Enter orientation : (h/v) \n";
+	cin >> ch;
+	while (ch != 'h' && ch != 'H' && ch != 'v' && ch != 'V')
+	{
+		cout << "Invalid orientation! \nEnter again (h/v)\n";
+		cin >> ch;
+	}
+	cout << "Enter the cordinates where you want to put (8x1) carrier : \n";
+	checkcondition(grid_p1, 8, 12, ch, 3, 'C');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p1, 12);
+
+	cout << "Enter the cordinates where you want to put (5x1) battleship : \n";
+	checkcondition(grid_p1, 5, 12, ch, 3, 'B');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p1, 12);
+
+	cout << "Enter the cordinates where you want to put (4x1) Cruiser : \n";
+	checkcondition(grid_p1, 4, 12, ch, 3, 'c');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p1, 12);
+
+	cout << "Enter the cordinates where you want to put (3x1) Submarine : \n";
+	checkcondition(grid_p1, 3, 12, ch, 3, 'S');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p1, 12);
+
+	cout << "Enter the cordinates where you want to put (2x1) Destroyer : \n";
+	checkcondition(grid_p1, 2, 12, ch, 3, 'D');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p1, 12);
+
+	cout << "\t\t\tPlayer 2\n\n";                      //Player 2 setting the ships
+	for (int i = 0; i < 12; i++) // Making a 8x8 grid
+	{
+		for (int j = 0; j < 12; j++)
+		{
+			grid_p2[i][j] = '.';
+		}
+	}
+	DisplayArray(grid_p2, 12);
+	cout << "Enter orientation : (h/v) \n";
+	cin >> ch;
+	while (ch != 'h' && ch != 'H' && ch != 'v' && ch != 'V')
+	{
+		cout << "Invalid orientation! \nEnter again (h/v)\n";
+		cin >> ch;
+	}
+	cout << "Enter the cordinates where you want to put (8x1) carrier : \n";
+	checkcondition(grid_p2, 8, 12, ch, 3, 'C');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p2, 12);
+
+	cout << "Enter the cordinates where you want to put (5x1) battleship : \n";
+	checkcondition(grid_p2, 5, 12, ch, 3, 'B');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p2, 12);
+
+	cout << "Enter the cordinates where you want to put (4x1) Cruiser : \n";
+	checkcondition(grid_p2, 4, 12, ch, 3, 'c');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p2, 12);
+
+	cout << "Enter the cordinates where you want to put (3x1) Submarine : \n";
+	checkcondition(grid_p2, 3, 12, ch, 3, 'S');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p2, 12);
+
+	cout << "Enter the cordinates where you want to put (2x1) Destroyer : \n";
+	checkcondition(grid_p2, 2, 12, ch, 3, 'D');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p2, 12);
+
+	char attack_P1[size][size];
+	char attack_P2[size][size];
+	for (int i = 0; i < 12; i++)
+	{
+		for (int j = 0; j < 12; j++)
+		{
+			attack_P1[i][j] = '.';
+			attack_P2[i][j] = '.';
+		}
+	}
+	DisplayArray(attack_P1, 12);
+	cout << "ITS TIME TO ATTACK" << endl;
+	attack_PvP(12, grid_p1, grid_p2, attack_P1, attack_P2);
+}
+
+void hard_PvP()
+{
+	char ch;
+	const int size = 15;
+	char grid_p1[size][size];
+	char grid_p2[size][size];
+	cout << "\t\t\tPlayer 1\n\n";                      //player 1 setting the ships
+	for (int i = 0; i < 15; i++) // Making a 8x8 grid
+	{
+		for (int j = 0; j < 15; j++)
+		{
+			grid_p1[i][j] = '.';
+		}
+	}
+	DisplayArray(grid_p1, 15);
+	cout << "Enter orientation : (h/v) \n";
+	cin >> ch;
+	while (ch != 'h' && ch != 'H' && ch != 'v' && ch != 'V')
+	{
+		cout << "Invalid orientation! \nEnter again (h/v)\n";
+		cin >> ch;
+	}
+	cout << "Enter the cordinates where you want to put (8x1) carrier : \n";
+	checkcondition(grid_p1, 8, 15, ch, 4, 'C');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p1, 15);
+
+	cout << "Enter the cordinates where you want to put (5x1) battleship : \n";
+	checkcondition(grid_p1, 5, 15, ch, 4, 'B');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p1, 15);
+
+	cout << "Enter the cordinates where you want to put (4x1) Cruiser : \n";
+	checkcondition(grid_p1, 4, 15, ch, 4, 'c');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p1, 15);
+
+	cout << "Enter the cordinates where you want to put (3x1) Submarine : \n";
+	checkcondition(grid_p1, 3, 15, ch, 4, 'S');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p1, 15);
+
+	cout << "Enter the cordinates where you want to put (2x1) Destroyer : \n";
+	checkcondition(grid_p1, 2, 15, ch, 4, 'D');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p1, 15);
+
+	cout << "\t\t\tPlayer 2\n\n";                      //Player 2 setting the ships
+	for (int i = 0; i < 15; i++) // Making a 8x8 grid
+	{
+		for (int j = 0; j < 15; j++)
+		{
+			grid_p2[i][j] = '.';
+		}
+	}
+	DisplayArray(grid_p2, 15);
+	cout << "Enter orientation : (h/v) \n";
+	cin >> ch;
+	while (ch != 'h' && ch != 'H' && ch != 'v' && ch != 'V')
+	{
+		cout << "Invalid orientation! \nEnter again (h/v)\n";
+		cin >> ch;
+	}
+	cout << "Enter the cordinates where you want to put (8x1) carrier : \n";
+	checkcondition(grid_p2, 8, 15, ch, 4, 'C');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p2, 15);
+
+	cout << "Enter the cordinates where you want to put (5x1) battleship : \n";
+	checkcondition(grid_p2, 5, 15, ch, 4, 'B');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p2, 15);
+
+	cout << "Enter the cordinates where you want to put (4x1) Cruiser : \n";
+	checkcondition(grid_p2, 4, 15, ch, 4, 'c');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p2, 15);
+
+	cout << "Enter the cordinates where you want to put (3x1) Submarine : \n";
+	checkcondition(grid_p2, 3, 15, ch, 4, 'S');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p2, 15);
+
+	cout << "Enter the cordinates where you want to put (2x1) Destroyer : \n";
+	checkcondition(grid_p2, 2, 15, ch, 4, 'D');
+	cout << "The grid becomes : \n\n";
+	DisplayArray(grid_p2, 15);
+	char attack_P1[size][size];
+	char attack_P2[size][size];
+	for (int i = 0; i < 15; i++)
+	{
+		for (int j = 0; j < 15; j++)
+		{
+			attack_P1[i][j] = '.';
+			attack_P2[i][j] = '.';
+		}
+	}
+	DisplayArray(attack_P1, 15);
+	cout << "ITS TIME TO ATTACK" << endl;
+	attack_PvP(15, grid_p1, grid_p2, attack_P1, attack_P2);
+}
+
+
+
+void Credits() // Displaying the Credits
+{
+	cout << "\t\t\t\t\t\t\tCreated by\n";
+	cout << "\t\t\t********************************************************************************" << endl;
+	cout << "\t\t\t21F-9198\t\t\t 21F-9083\n\t\t\t\t21F-9122\t\t\t\t\t21F-9068\n\t\t\t\t\t\t\tBSCS(4A)" << endl;
+	cout << "\t\t\t********************************************************************************" << endl << endl;
+	main_menu();
+}
+
+
+void Rules() // Displaying the Rules
+{
+	cout << "\t************ Rules ************" << endl << endl;
+	cout << "1. You have to destroy your opponent's war ships before he destroys yours." << endl;
+	cout << "2. The battlefield size is 8x8 grid(EASY MODE),12x12 grid(MEDIUM MODE),15x15 grid(HARD MODE) in which you place your ships." << endl;
+	cout << "3. You can place your ships by entering its orientation. For horizontal orientation, type 'h' in the orientation option and type 'v' for vertical." << endl;
+	cout << "4. x is the row number and y is the column number." << endl;
+	cout << "5. You have 4 battle ships: Carrier (8 units long), Battleship (5 units long),Cruiser (4 units long), Destroyer (2 units long) and Submarine (3 units long)." << endl;
+	cout << "6. After placing your ships, you can attack the enemy area. To attack a area, enter its x y coordinate." << endl;
+	cout << "7. Attacked point to the enemy ship is denoted by a 'H'." << endl;
+	cout << "8. Attack miss is denoted by a '*'." << endl << endl;
+	main_menu();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////13.Candy Crush
+//////////////////////////////////////////////////////CODE:  
+
+
+
+
+#include<iostream>
+#include<ctime>
+#include<iomanip>
+#include<unistd.h>
+#include<cstring>
+#include<string>
+#include<cstdlib>
+#include<fstream>
+//#include <Windows.h>
+
+int moves = 15, score;
+
+using namespace std;
+
+int row1 = 0, col1 = 0, row2 = 0, col2 = 0;
+
+//to add delay by using loop
+void delay()
+{
+	for (int i = 0; i < 100000; )
+	{
+		i++;
+	}
+
+}
+
+//score function
+void scorer(char alpha)
+{
+	if (alpha == 'R' || alpha == '%')
+	{
+		score += 30;
+	}
+	else if (alpha == 'Y' || alpha == '?')
+	{
+		score += 30;
+	}
+	else if (alpha == 'G' || alpha == '#')
+	{
+		score += 40;
+	}
+	else if (alpha == 'B' || alpha == '&')
+	{
+		score += 50;
+	}
+	else if (alpha == 'O' || alpha == '*')
+	{
+		score += 60;
+	}
+	else
+	{
+		score += 70;
+	}
+
+}
+
+char ranch()
+{
+	int alpha;
+	do
+	{
+		alpha = rand() % 25 + 65;
+	} while (alpha != 'R' && alpha != 'Y' && alpha != 'G' && alpha != 'B' && alpha != 'O');
+
+	return alpha;
+}
+
+
+void start()
+{
+	cout << "              *             " << endl;
+	cout << "             * *            " << endl;
+	cout << "            *  *            " << endl;
+	cout << "           *   *            " << endl;
+	cout << "          *    *            " << endl;
+	cout << "         *     *            " << endl;
+	cout << "               *            " << endl;
+	cout << "               *            " << endl;
+	cout << "               *            " << endl;
+	cout << "               *            " << endl;
+	cout << "               *            " << endl;
+	cout << "               *            " << endl;
+	cout << "               *            " << endl;
+	cout << "               *            " << endl;
+	cout << "               *            " << endl;
+	cout << "               *            " << endl;
+	cout << "               *            " << endl;
+	cout << "               *            " << endl;
+	cout << "       * * * * * * * * *    " << endl;
+	cout << "       * * * * * * * * *    " << endl;
+
+}
+
+void start2()
+{
+	cout << "           * * * * * * *    " << endl;
+	cout << "         *               *  " << endl;
+	cout << "       *                   *  " << endl;
+	cout << "      *                      * " << endl;
+	cout << "      *                       *" << endl;
+	cout << "                              *" << endl;
+	cout << "                             *" << endl;
+	cout << "                           *" << endl;
+	cout << "                         *" << endl;
+	cout << "                       *" << endl;
+	cout << "                     *" << endl;
+	cout << "                   *" << endl;
+	cout << "                 *" << endl;
+	cout << "               *" << endl;
+	cout << "             *" << endl;
+	cout << "           *" << endl;
+	cout << "         *" << endl;
+	cout << "       *" << endl;
+	cout << "     * * * * * * * * * * * * * *" << endl;
+	
+
+}
+
+void start3()
+{
+	cout << "       * * * * * *          " << endl;
+	cout << "     *             *        " << endl;
+	cout << "   *                 *      " << endl;
+	cout << "                      *     " << endl;
+	cout << "                      *    " << endl;
+	cout << "                      *    " << endl;
+	cout << "                    *       " << endl;
+	cout << "                  *         " << endl;
+	cout << "                *           " << endl;
+	cout << "    * * * * * *             " << endl;
+	cout << "                *           " << endl;
+	cout << "                  *         " << endl;
+	cout << "                    *       " << endl;
+	cout << "                      *     " << endl;
+	cout << "                      *     " << endl;
+	cout << "                      *     " << endl;
+	cout << "   *                 *      " << endl;
+	cout << "     *             *        " << endl;
+	cout << "       * * * * * *          " << endl;
+
+
+
+
+
+}
+
+
+void start4()
+{
+	cout << endl << endl << endl << endl;
+	cout << " *         * * *   * * * * *    * * * *     " << endl;
+	cout << " *         *           *        *           " << endl;
+	cout << " *         * * *       *        * * * *     " << endl;
+	cout << " *         *           *              *     " << endl;
+	cout << " * * * *   * * *       *        * * * *     " << endl;
+	cout << "                                            " << endl;
+	cout << "                                            " << endl;
+	cout << "                                         *  " << endl;
+	cout << "  * * *    *             *       *   *   *  " << endl;
+	cout << "  *    *   *            * *       * *    *  " << endl;
+	cout << "  * * *    *           * * *       *     *  " << endl;
+	cout << "  *        *          *     *      *        " << endl;
+	cout << "  *        * * * *   *       *     *     *  " << endl;
+	cout << "                                            " << endl;
+
+}
+
+char packetchar(char alpha)
+{
+	if (alpha == 'R')
+	{
+		return '%';
+	}
+	else if (alpha == 'Y')
+	{
+		return '?';
+	}
+	else if (alpha == 'G')
+	{
+		return '#';
+	}
+	else if (alpha == 'B')
+	{
+		return '&';
+	}
+	else if (alpha == 'O')
+	{
+		return '*';
+	}
+	else
+	{
+	    return ' ';
+	}
+
+}
+
+bool packetchecker(char alpha)
+{
+	if (alpha == '*')
+		return 1;
+	else if (alpha == '&')
+		return 1;
+	else if (alpha == '#')
+		return 1;
+	else if (alpha == '?')
+		return 1;
+	else if (alpha == '%')
+		return 1;
+	else
+		return 0;
+
+
+}
+
+void startval1(char arr[9][9])
+{
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; j++)
+		{
+			do
+			{
+				arr[i][j] = ranch();
+
+			} while (((arr[i][j] == arr[i + 1][j] && arr[i][j] == arr[i + 2][j]) || (arr[i][j] == arr[i][j + 1] && arr[i][j] == arr[i][j + 2])) || ((arr[i][j] == arr[i - 1][j] && arr[i][j] == arr[i - 2][j]) || (arr[i][j] == arr[i][j - 1] && arr[i][j] == arr[i][j - 2])));
+
+		}
+	}
+
+}
+
+void startval2(char arr[][9])
+{
+	ifstream infile, inner;
+	infile.open("SAVE.txt");
+	inner.open("MOVES.txt");
+	if (infile.is_open() && inner.is_open())
+	{
+		for (int i = 0; i < 9; i++)
+		{
+			for (int j = 0; j < 9; j++)
+			{
+				infile >> arr[i][j];
+			}
+		}
+		inner >> moves;
+		infile.close();
+		inner.close();
+	}
+	else
+	{
+		cout << "\n\nNO SAVE FILE FOUND!";
+		cout << "\n\nSTARTING NEW GAME!";
+		usleep(1500000);
+		startval1(arr);
+
+	}
+}
+
+
+void display(char arr[9][9])
+{
+	cout << "======================================== CANDY CRUSH ========================================\n\n";
+	cout << "\t\tMOVES REMAINING  :  " << moves << "    SCORE  :  " << score << endl;
+	cout << "\t\tSpecial Characters Description :-  \n";
+	cout << "\t\t1) Small Letter means Strip Candy of Same Captital Letter\n";
+	cout << "\t\t2) For Packet Candies Following are the Special Characters :- \n";
+	//cout << "\t\t% = R\t* = O\t& = B\t? = Y\t# = G\n\n\n";
+	cout << "\t\t%\t$\t&\t?\t#\n\n\n";
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			if (arr[i][j] == 'R')
+			{
+				cout << setw(8) << '%';
+			}
+			else if (arr[i][j] == 'O')
+			{
+				cout << setw(8) << '$';
+			}
+			else if (arr[i][j] == 'B')
+			{
+				cout << setw(8) << '&';
+			}
+			else if (arr[i][j] == 'Y')
+			{
+				cout << setw(8) << '?';
+			}
+			else if (arr[i][j] == 'G')
+			{
+				cout << setw(8) << '#';
+			}
+		}
+		cout << endl << endl;
+	}
+
+}
+
+void display(char arr[9][9], int row, int col)//For Swapping Display + sign
+{
+	cout << "======================================== CANDY CRUSH ========================================\n\n";
+	cout << "\t\tMOVES REMAINING  :  " << moves << "    SCORE  :  " << score << endl;
+	cout << "\t\tSpecial Characters Description :-  \n";
+	cout << "\t\t1) Small Letter means Strip Candy of Same Captital Letter\n";
+	cout << "\t\t2) For Packet Candies Following are the Special Characters :- \n";
+	//cout << "\t\t% = R\t* = O\t& = B\t? = Y\t# = G\n\n\n";
+	cout << "\t\t%\t$\t&\t?\t#\n\n\n";
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			if (i == row && j == col)
+			{
+				if (arr[i][j] == 'R')
+				{
+					cout << setw(8) << '+' << '%';
+				}
+				else if (arr[i][j] == 'O')
+				{
+					cout << setw(8) << '+' << '$';
+				}
+				else if (arr[i][j] == 'B')
+				{
+					cout << setw(8) << '+' << '&';
+				}
+				else if (arr[i][j] == 'Y')
+				{
+					cout << setw(8) << '+' << '?';
+				}
+				else if (arr[i][j] == 'G')
+				{
+					cout << setw(8) << '+' << '#';
+				}
+			}
+			else
+			{
+				if (arr[i][j] == 'R')
+				{
+					cout << setw(8) << '%';
+				}
+				else if (arr[i][j] == 'O')
+				{
+					cout << setw(8) << '$';
+				}
+				else if (arr[i][j] == 'B')
+				{
+					cout << setw(8) << '&';
+				}
+				else if (arr[i][j] == 'Y')
+				{
+					cout << setw(8) << '?';
+				}
+				else if (arr[i][j] == 'G')
+				{
+					cout << setw(8) << '#';
+				}
+			}
+		}
+		cout << endl << endl;
+	}
+
+}
+
+void stripexecute3(char arr[][9])
+{
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; j++)
+		{
+			if (arr[i][j] >= 97 && arr[i][j] <= 122)
+			{
+				//for rowss
+				if (arr[i][j] == arr[i + 1][j] - 32 && arr[i][j] == arr[i - 1][j] - 32)
+				{
+					for (int k = 0; k < 9; k++)
+					{
+						arr[i][k] = '0';
+					}
+					arr[i][j] = '0';
+					arr[i + 1][j] = '0';
+					arr[i - 1][j] = '0';
+					scorer(arr[i][j]);
+				}
+
+				else if (arr[i][j] == arr[i + 1][j] - 32 && arr[i][j] == arr[i + 2][j] - 32)
+				{
+					for (int k = 0; k < 9; k++)
+					{
+						arr[i][k] = '0';
+					}
+					arr[i][j] = '0';
+					arr[i + 2][j] = '0';
+					arr[i + 1][j] = '0';
+					scorer(arr[i][j]);
+				}
+
+				else if (arr[i][j] == arr[i - 1][j] - 32 && arr[i][j] == arr[i - 2][j] - 32)
+				{
+					for (int k = 0; k < 9; k++)
+					{
+						arr[i][k] = '0';
+					}
+					arr[i][j] = '0';
+					arr[i - 1][j] = '0';
+					arr[i - 2][j] = '0';
+					scorer(arr[i][j]);
+				}
+
+
+
+
+				//for columns
+				else if (arr[i][j] == arr[i][j + 1] && arr[i][j] == arr[i][j - 1] - 32)
+				{
+					for (int k = 0; k < 9; k++)
+					{
+						arr[i][k] = '0';
+					}
+					arr[i][j] = '0';
+					arr[i][j + 1] = '0';
+					arr[i][j - 1] = '0';
+					scorer(arr[i][j]);
+				}
+
+				else if (arr[i][j] == arr[i][j + 1] && arr[i][j] == arr[i][j + 2] - 32)
+				{
+					for (int k = 0; k < 9; k++)
+					{
+						arr[i][k] = '0';
+					}
+					arr[i][j] = '0';
+					arr[i][j + 1] = '0';
+					arr[i][j + 2] = '0';
+					scorer(arr[i][j]);
+				}
+
+				else if (arr[i][j] == arr[i][j - 1] && arr[i][j] == arr[i][j - 2] - 32)
+				{
+					for (int k = 0; k < 9; k++)
+					{
+						arr[i][k] = '0';
+					}
+					arr[i][j] = '0';
+					arr[i][j - 1] = '0';
+					arr[i][j - 2] = '0';
+					scorer(arr[i][j]);
+				}
+
+			}
+		}
+	}
+}
+
+
+void packetexecute3(char arr[][9])
+{
+	bool flag = 0;
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			flag = packetchecker(arr[i][j]);
+			if (flag == 1)
+			{
+				if (arr[i][j] == '#')
+				{
+					if (arr[i + 1][j] == 'G' && arr[i - 1][j] == 'G')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+
+					}
+
+
+
+					else if (arr[i][j + 1] == 'G' && arr[i][j - 1] == 'G')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+
+					}
+
+					else if (arr[i][j + 1] == 'G' && arr[i][j + 2] == 'G')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+
+					}
+
+					else if (arr[i + 1][j] == 'G' && arr[i + 2][j] == 'G')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+
+					}
+
+					else if (arr[i][j - 1] == 'G' && arr[i][j - 2] == 'G')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+
+					}
+
+					else if (arr[i - 1][j] == 'G' && arr[i - 2][j] == 'G')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+
+					}
+
+
+				}
+
+				if (arr[i][j] == '%')
+				{
+					if (arr[i + 1][j] == 'R' && arr[i - 1][j] == 'R')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+
+					}
+
+
+
+					else if (arr[i][j + 1] == 'R' && arr[i][j - 1] == 'R')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+
+					}
+
+					else if (arr[i][j + 1] == 'R' && arr[i][j + 2] == 'R')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+
+					}
+
+					else if (arr[i + 1][j] == 'R' && arr[i + 2][j] == 'R')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+
+					}
+
+					else if (arr[i][j - 1] == 'R' && arr[i][j - 2] == 'R')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+
+					}
+
+					else if (arr[i - 1][j] == 'R' && arr[i - 2][j] == 'R')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+
+					}
+
+
+				}
+
+				if (arr[i][j] == '?')
+				{
+					if (arr[i + 1][j] == 'Y' && arr[i - 1][j] == 'Y')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+
+					}
+
+
+
+					else if (arr[i][j + 1] == 'Y' && arr[i][j - 1] == 'Y')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+
+					}
+
+					else if (arr[i][j + 1] == 'Y' && arr[i][j + 2] == 'Y')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+
+					}
+
+					else if (arr[i + 1][j] == 'Y' && arr[i + 2][j] == 'Y')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+
+					}
+
+					else if (arr[i][j - 1] == 'Y' && arr[i][j - 2] == 'Y')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+
+					}
+
+					else if (arr[i - 1][j] == 'Y' && arr[i - 2][j] == 'Y')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+
+					}
+
+
+				}
+
+				if (arr[i][j] == '&')
+				{
+					if (arr[i + 1][j] == 'B' && arr[i - 1][j] == 'B')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+
+					}
+
+
+
+					else if (arr[i][j + 1] == 'B' && arr[i][j - 1] == 'B')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+					}
+
+					else if (arr[i][j + 1] == 'B' && arr[i][j + 2] == 'B')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+					}
+
+					else if (arr[i + 1][j] == 'B' && arr[i + 2][j] == 'B')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+					}
+
+					else if (arr[i][j - 1] == 'B' && arr[i][j - 2] == 'B')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+					}
+
+					else if (arr[i - 1][j] == 'B' && arr[i - 2][j] == 'B')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+					}
+
+
+				}
+
+				if (arr[i][j] == '*')
+				{
+					if (arr[i + 1][j] == 'O' && arr[i - 1][j] == 'O')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+					}
+
+
+
+					else if (arr[i][j + 1] == 'O' && arr[i][j - 1] == 'O')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+					}
+
+					else if (arr[i][j + 1] == 'O' && arr[i][j + 2] == 'O')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+					}
+
+					else if (arr[i + 1][j] == 'O' && arr[i + 2][j] == 'O')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+					}
+
+					else if (arr[i][j - 1] == 'O' && arr[i][j - 2] == 'O')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+					}
+
+					else if (arr[i - 1][j] == 'O' && arr[i - 2][j] == 'O')
+					{
+						arr[i][j] = '0';
+						arr[i - 1][j] = '0';
+						arr[i - 1][j + 1] = '0';
+						arr[i][j + 1] = '0';
+						arr[i + 1][j + 1] = '0';
+						arr[i + 1][j] = '0';
+						arr[i + 1][j - 1] = '0';
+						arr[i][j - 1] = '0';
+						arr[i - 1][j - 1] = '0';
+						scorer(arr[i][j]);
+					}
+
+
+				}
+
+
+
+			}
+		}
+	}
+}
+
+
+void sel1(char arr[9][9])
+{
+	int i = 0, j = 0;
+	char input;
+	do
+	{
+		cout << "Instructions :-\n";
+		cout << "Enter W to Up\nEnter D to Right\nEnter S to Down\nEnter A to Left\n\n";
+		cout << "Select the First CANDY to Swap \nPress Enter Key After Every Input\nEnter SPACE to Select :- \n\n";
+		cout << "\n\nENTER  :  ";
+
+		input = getchar();
+		if (input == 'A' || input == 'a')
+		{
+			if (j - 1 < 0)
+			{
+				j = 8;
+			}
+			else
+			{
+				j--;
+			}
+		}
+		else if (input == 'S' || input == 's')
+		{
+			if (i + 1 >= 9)
+			{
+				i = 0;
+			}
+			else
+			{
+				i++;
+			}
+		}
+		else if (input == 'D' || input == 'd')
+		{
+			if (j + 1 >= 9)
+			{
+				j = 0;
+			}
+			else
+			{
+				j++;
+			}
+		}
+		else if (input == 'W' || input == 'w')
+		{
+			if (i - 1 < 0)
+			{
+				i = 8;
+			}
+			else
+			{
+				i--;
+			}
+		}
+		system("clear");
+		display(arr, i, j);
+
+	} while (input != 32);
+	row1 = i; col1 = j;
+}
+
+
+
+void sel3()
+{
+	char input;
+	cout << "Instructions :-\n";
+	cout << "Enter W to Up\nEnter D to Right\nEnter S to Down\nEnter A to Left\n\n";
+	cout << "\n\nENTER  :  ";
+	cin.ignore();
+	input = getchar();
+
+	bool flag = 1;
+	do
+	{
+		if (input == 'W' || input == 'w')
+		{
+			row2 = row1 - 1;
+			flag = 1;
+		}
+		else if (input == 'S' || input == 's')
+		{
+			row2 = row1 + 1;
+			flag = 1;
+		}
+		else if (input == 'A' || input == 'a')
+		{
+			col2 = col1 - 1;
+			flag = 1;
+		}
+		else if (input == 'D' || input == 'd')
+		{
+			row2 = row1 + 1;
+			flag = 1;
+		}
+		else
+		{
+			cout << "\n\nINVALID INPUT\n\n";
+			flag = 0;
+		}
+	} while (flag == 0);
+
+}
+
+
+void sel2(char arr[9][9])
+{
+	int i = row1, j = col1;
+	char input;
+
+	cout << "Instructions :-\n";
+	cout << "Enter W to Up\nEnter D to Right\nEnter S to Down\nEnter A to Left\n\n";
+	cout << "Select the SECOND CANDY to Swap \nPress Enter Key After Every Input\nEnter SPACE to Select :- \n\n";
+	cin.ignore();
+	input = getchar();
+
+	if (input == 'A' || input == 'a')
+	{
+		if (j - 1 < 0)
+		{
+			j = 8;
+		}
+		else
+		{
+			j--;
+		}
+	}
+	else if (input == 'S' || input == 's')
+	{
+		if (i + 1 >= 9)
+		{
+			i = 0;
+		}
+		else
+		{
+			i++;
+		}
+	}
+	else if (input == 'D' || input == 'd')
+	{
+		if (j + 1 >= 9)
+		{
+			j = 0;
+		}
+		else
+		{
+			j++;
+		}
+	}
+	else if (input == 'W' || input == 'w')
+	{
+		if (i - 1 < 0)
+		{
+			i = 8;
+		}
+		else
+		{
+			i--;
+		}
+	}
+	system("clear");
+	display(arr, i, j);
+	row2 = i; col2 = j;
+}
+
+void fifercheck(char arr[][9], char alpha1, char alpha2)
+{
+	if (alpha1 == '@')
+	{
+		scorer(alpha1);
+		alpha1 == '0';
+		for (int i = 0; i < 9; i++)
+		{
+			for (int j = 0; j < 9; j++)
+			{
+				if (arr[i][j] == alpha2);
+				{
+					arr[i][j] = '0';
+				}
+			}
+		}
+
+	}
+	else if (alpha2 == '@')
+	{
+		scorer(alpha2);
+		alpha2 == '0';
+		for (int i = 0; i < 9; i++)
+		{
+			for (int j = 0; j < 9; j++)
+			{
+				if (arr[i][j] == alpha1);
+				{
+					arr[i][j] = '0';
+				}
+			}
+		}
+	}
+}
+void swap(char arr[9][9])
+{
+	char temp;
+	sel1(arr);
+	sel2(arr);
+	temp = arr[row1][col1];
+	arr[row1][col1] = arr[row2][col2];
+	arr[row2][col2] = temp;
+	if (arr[row2][col2] == '@' && arr[row1][col1] == '@')
+	{
+
+		scorer(arr[row2][col2]);
+		for (int i = 0; i < 9; i++)
+		{
+			for (int j = 0; j < 9; j++)
+			{
+				arr[i][j] = 0;
+			}
+		}
+	}
+	else if (arr[row2][col2] == '@' || arr[row1][col1] == '@')
+	{
+		fifercheck(arr, arr[row2][col2], arr[row1][col1]);
+	}
+	else if (arr[row2][col2] <= 97 && arr[row1][col1] <= 122)
+		moves--;
+	system("clear");
+	cout << "AFTER SWAPPING :-\n\n";
+	display(arr);
+
+}
+
+void check3(char arr[][9])
+{
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; j++)
+		{
+			packetexecute3(arr);
+			stripexecute3(arr);
+
+			if (arr[i][j] == arr[i + 1][j] && arr[i][j] == arr[i - 1][j])
+			{
+				scorer(arr[i][j]);
+
+				arr[i][j] = '0';
+				arr[i + 1][j] = '0';
+				arr[i - 1][j] = '0';
+
+			}
+
+			else if (arr[i][j] == arr[i + 1][j] && arr[i][j] == arr[i + 2][j])
+			{
+				scorer(arr[i][j]);
+				arr[i][j] = '0';
+				arr[i + 1][j] = '0';
+				arr[i + 2][j] = '0';
+			}
+
+			else if (arr[i][j] == arr[i - 2][j] && arr[i][j] == arr[i - 1][j])
+			{
+				scorer(arr[i][j]);
+				arr[i][j] = '0';
+				arr[i + 1][j] = '0';
+				arr[i - 1][j] = '0';
+			}
+
+
+			else if (arr[i][j] == arr[i][j + 1] && arr[i][j] == arr[i][j - 1])
+			{
+				scorer(arr[i][j]);
+				arr[i][j] = '0';
+				arr[i][j + 1] = '0';
+				arr[i][j - 1] = '0';
+			}
+
+			else if (arr[i][j] == arr[i][j + 1] && arr[i][j] == arr[i][j + 2])
+			{
+				scorer(arr[i][j]);
+				arr[i][j] = '0';
+				arr[i][j + 1] = '0';
+				arr[i][j - 1] = '0';
+			}
+
+			else if (arr[i][j] == arr[i][j - 1] && arr[i][j] == arr[i][j - 2])
+			{
+				scorer(arr[i][j]);
+				arr[i][j] = '0';
+				arr[i][j + 1] = '0';
+				arr[i][j - 1] = '0';
+			}
+
+
+		}
+	}
+
+
+	system("clear");
+	display(arr);
+}
+
+
+void check4(char arr[][9])
+{
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; j++)
+		{
+			if (arr[i][j] == arr[i + 1][j] && arr[i][j] == arr[i - 1][j] && arr[i][j] == arr[i - 2][j])
+			{
+				scorer(arr[i][j]);
+				arr[i][j] = arr[i][j] + 32;
+				arr[i + 1][j] = '0';
+				arr[i - 1][j] = '0';
+				arr[i - 2][j] = '0';
+			}
+
+			else if (arr[i][j] == arr[i + 1][j] && arr[i][j] == arr[i - 1][j] && arr[i][j] == arr[i + 2][j])
+			{
+				scorer(arr[i][j]);
+				arr[i][j] = arr[i][j] + 32;
+				arr[i + 1][j] = '0';
+				arr[i - 1][j] = '0';
+				arr[i + 2][j] = '0';
+			}
+
+
+			else if (arr[i][j] == arr[i + 1][j] && arr[i][j] == arr[i + 3][j] && arr[i][j] == arr[i + 2][j])
+			{
+				scorer(arr[i][j]);
+				arr[i][j] = arr[i][j] + 32;
+				arr[i + 1][j] = '0';
+				arr[i + 3][j] = '0';
+				arr[i + 2][j] = '0';
+			}
+
+
+			else if (arr[i][j] == arr[i - 1][j] && arr[i][j] == arr[i - 3][j] && arr[i][j] == arr[i - 2][j])
+			{
+				scorer(arr[i][j]);
+				arr[i][j] = arr[i][j] + 32;
+				arr[i - 1][j] = '0';
+				arr[i - 3][j] = '0';
+				arr[i - 2][j] = '0';
+			}
+
+
+			else if (arr[i][j] == arr[i][j + 1] && arr[i][j] == arr[i][j - 1] && arr[i][j] == arr[i][j + 2])
+			{
+				scorer(arr[i][j]);
+				arr[i][j] = arr[i][j] + 32;
+				arr[j + 1][j] = '0';
+				arr[j - 1][j] = '0';
+				arr[j + 2][j] = '0';
+			}
+
+
+			else if (arr[i][j] == arr[i][j + 1] && arr[i][j] == arr[i][j - 1] && arr[i][j] == arr[i][j - 2])
+			{
+				scorer(arr[i][j]);
+				arr[i][j] = arr[i][j] + 32;
+				arr[j + 1][j] = '0';
+				arr[j - 1][j] = '0';
+				arr[j - 2][j] = '0';
+			}
+
+			else if (arr[i][j] == arr[i][j - 1] && arr[i][j] == arr[i][j - 2] && arr[i][j] == arr[i][j - 3])
+			{
+				scorer(arr[i][j]);
+				arr[i][j] = arr[i][j] + 32;
+				arr[j - 1][j] = '0';
+				arr[j - 2][j] = '0';
+				arr[j - 3][j] = '0';
+			}
+
+			else if (arr[i][j] == arr[i][j + 1] && arr[i][j] == arr[i][j + 2] && arr[i][j] == arr[i][j + 3])
+			{
+				scorer(arr[i][j]);
+				arr[i][j] = arr[i][j] + 32;
+				arr[j + 1][j] = '0';
+				arr[j + 2][j] = '0';
+				arr[j + 3][j] = '0';
+			}
+
+
+		}
+	}
+
+
+	system("clear");
+	display(arr);
+}
+
+void down(char arr[][9])
+{
+	char temp;
+	bool flag = 1;
+	do
+	{
+		flag = 1;
+		for (int i = 0; i < 9 && flag == 1; i++)
+		{
+			for (int j = 0; j < 9 && flag == 1; j++)
+			{
+				if (arr[i][j] != 0)
+				{
+					flag = 1;
+				}
+				else
+				{
+					flag = 0;
+				}
+			}
+		}
+		if (flag == 1)
+		{
+			break;
+		}
+		for (int i = 0; i < 9; i++)
+		{
+			for (int j = 0; j < 9; j++)
+			{
+				if (arr[i][j] == '0' && i != 0)
+				{
+					temp = arr[i][j];
+					arr[i][j] = arr[i - 1][j];
+					arr[i - 1][j] = temp;
+				}
+				if (arr[0][j] == '0')
+				{
+					flag = 0;
+				}
+			}
+		}
+
+
+
+	} while (flag != 0);
+
+}
+
+void newch(char arr[][9])
+{
+	down(arr);
+
+
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			if (arr[i][j] == '0')
+			{
+				arr[i][j] = ranch();
+			}
+		}
+	}
+
+
+	system("clear");
+
+	display(arr);
+}
+
+void check5(char arr[][9])
+{
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; j++)
+		{
+			if (arr[i][j] == arr[i + 1][j] && arr[i][j] == arr[i - 1][j] && arr[i][j] == arr[i - 2][j] && arr[i][j] == arr[i + 2][j])
+			{
+				scorer(arr[i][j]);
+				arr[i][j] = '@';
+				arr[i + 1][j] = '0';
+				arr[i - 1][j] = '0';
+				arr[i - 2][j] = '0';
+				arr[i + 2][j] = '0';
+			}
+
+			if (arr[i][j] == arr[i][j + 1] && arr[i][j] == arr[i][j - 1] && arr[i][j] == arr[i][j - 2] && arr[i][j] == arr[i][j + 2])
+			{
+				scorer(arr[i][j]);
+				arr[i][j] = '@';
+				arr[i][j + 1] = '0';
+				arr[i][j - 1] = '0';
+				arr[i][j - 2] = '0';
+				arr[i][j + 2] = '0';
+			}
+		}
+	}
+
+
+	system("clear");
+	display(arr);
+}
+
+
+void checkpack(char arr[][9]) //Check to Create Packet Candy
+{
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; j++)
+		{
+			if (arr[i][j] == arr[i + 1][j] && arr[i][j] == arr[i + 2][j] && arr[i][j] == arr[i][j + 1] && arr[i][j + 2])
+			{
+				scorer(arr[i][j]);
+				arr[i][j] = packetchar(arr[i][j]);
+				arr[i + 2][j] = '0';
+				arr[i + 1][j] = '0';
+				arr[i][j + 1] = '0';
+				arr[i][j + 2] = '0';
+
+
+			}
+
+
+			else if (arr[i][j] == arr[i - 1][j] && arr[i][j] == arr[i - 2][j] && arr[i][j] == arr[i][j + 1] && arr[i][j + 2])
+			{
+				scorer(arr[i][j]);
+				arr[i][j] = packetchar(arr[i][j]);
+				arr[i - 2][j] = '0';
+				arr[i - 1][j] = '0';
+				arr[i][j + 1] = '0';
+				arr[i][j + 2] = '0';
+
+
+			}
+
+			else if (arr[i][j] == arr[i - 1][j] && arr[i][j] == arr[i - 2][j] && arr[i][j] == arr[i][j - 1] && arr[i][j - 2])
+			{
+				scorer(arr[i][j]);
+				arr[i][j] = packetchar(arr[i][j]);
+				arr[i - 2][j] = '0';
+				arr[i - 1][j] = '0';
+				arr[i][j - 1] = '0';
+				arr[i][j - 2] = '0';
+
+			}
+			else if (arr[i][j] == arr[i + 1][j] && arr[i][j] == arr[i + 2][j] && arr[i][j] == arr[i][j - 1] && arr[i][j - 2])
+			{
+				scorer(arr[i][j]);
+				arr[i][j] = packetchar(arr[i][j]);
+				arr[i - 2][j] = '0';
+				arr[i - 1][j] = '0';
+				arr[i][j - 1] = '0';
+				arr[i][j - 2] = '0';
+
+			}
+
+			else if (arr[i][j] == arr[i + 1][j] && arr[i][j] == arr[i + 2][j] && arr[i][j] == arr[i][j + 1] && arr[i][j - 1])
+			{
+				scorer(arr[i][j]);
+				arr[i][j] = packetchar(arr[i][j]);
+				arr[i + 2][j] = '0';
+				arr[i + 1][j] = '0';
+				arr[i][j + 1] = '0';
+				arr[i][j - 1] = '0';
+
+			}
+
+			else if (arr[i][j] == arr[i - 1][j] && arr[i][j] == arr[i - 2][j] && arr[i][j] == arr[i][j + 1] && arr[i][j - 1])
+			{
+				scorer(arr[i][j]);
+				arr[i][j] = packetchar(arr[i][j]);
+				arr[i - 2][j] = '0';
+				arr[i - 1][j] = '0';
+				arr[i][j + 1] = '0';
+				arr[i][j - 1] = '0';
+
+			}
+
+			else if (arr[i][j] == arr[i + 1][j] && arr[i][j] == arr[i - 1][j] && arr[i][j] == arr[i][j + 1] && arr[i][j + 2])
+			{
+				scorer(arr[i][j]);
+				arr[i][j] = packetchar(arr[i][j]);
+				arr[i - 1][j] = '0';
+				arr[i + 1][j] = '0';
+				arr[i][j + 1] = '0';
+				arr[i][j + 2] = '0';
+
+			}
+
+			else if (arr[i][j] == arr[i + 1][j] && arr[i][j] == arr[i - 1][j] && arr[i][j] == arr[i][j - 1] && arr[i][j - 2])
+			{
+				scorer(arr[i][j]);
+				arr[i][j] = packetchar(arr[i][j]);
+				arr[i - 1][j] = '0';
+				arr[i + 1][j] = '0';
+				arr[i][j - 1] = '0';
+				arr[i][j - 2] = '0';
+
+			}
+
+		}
+
+	}
+
+
+
+}
+
+bool checker(char arr[][9])
+{
+	int i, j;
+	bool flag = 0;
+
+	for (i = 0; i < 9 && flag == 0; i++)
+	{
+		for (j = 0; j < 9 && flag == 0; j++)
+		{
+			if (arr[i][j] == arr[i + 1][j] && arr[i][j] == arr[i - 1][j])
+			{
+				flag = 1;
+			}
+
+
+			if (arr[i][j] == arr[i][j + 1] && arr[i][j] == arr[i][j - 1])
+			{
+				flag = 1;
+			}
+		}
+	}
+
+	return flag;
+}
+
+
+void combcheck(char arr[][9])
+{
+	bool flag;
+	do
+	{
+		flag = checker(arr);
+		if (flag == 1)
+		{
+			check5(arr);
+			check4(arr);
+			check3(arr);
+			newch(arr);
+		}
+
+	} while (flag == 1);
+	system("clear");
+	display(arr);
+}
+
+
+int main()
+{
+	system("clear");
+	srand(time(0));
+	const int RSIZE = 9, CSIZE = 9;
+	char arr[RSIZE][CSIZE];
+
+	cout << "----------WELCOME TO THE CANDY CRUSH GAME!----------\n\n";
+	cout << "--------JUST FOLLOW THE INSTRUCTIONS GIVEN BELOW--------\n\n";
+	cout << "1.  Enter 1 to START The Game\n";
+	cout << "2.  Enter 2 to EXIT\n";
+	cout << "3.  Enter 3 for CREDITS\n";
+	cout << "4.  Enter 4 to Load The Last Game\n";
+
+	cout << "ENTER  :  ";
+
+
+	int input1, input2;
+	cin >> input1;
+
+	ifstream infile, inner;
+	ofstream outfile, outer;
+	if (input1 == 1)
+	{
+		startval1(arr);
+	}
+	else if (input1 == 4)
+	{
+		startval2(arr);
+		input1 = 1;
+
+	}
+
+	if (input1 == 1)
+	{
+		system("clear");
+		usleep(1500000);
+		start3();
+		usleep(1500000);
+		system("clear");
+		start2();
+		usleep(1500000);
+		system("clear");
+		start();
+		usleep(1500000);
+		system("clear");
+		start4();
+		usleep(1500000);
+		system("clear");
+
+
+
+
+
+
+		system("clear");
+		display(arr);
+		do
+		{
+
+			swap(arr);
+			check5(arr);
+			checkpack(arr);
+			check4(arr);
+			check3(arr);
+			newch(arr);
+			combcheck(arr);
+
+			cout << endl << endl << endl;
+			cout << "Enter 0 to Exit the Game Without Saving\n";
+			cout << "Enter 1 To Continue the Game\n";
+			cout << "Enter 2 to Exit By Saving Game\n";
+
+			cout << "\n\nEnter  :  ";
+			cin >> input2;
+			if (input2 == 2)
+			{
+				outfile.open("SAVE.txt");
+				outer.open("MOVES.txt");
+				for (int i = 0; i < 8; i++)
+				{
+					for (int j = 0; j < 8; j++)
+					{
+						outfile << arr[i][j];
+					}
+				}
+				outer << moves;
+				outfile.close();
+				outer.close();
+			}
+		} while (input2 == 1 && moves > 0);
+
+		if (moves == 0)
+		{
+			system("clear");
+			cout << "================ END OF THE GAME ================";
+			cout << "\n\nYOUR SCORE IS  :  " << score;
+		}
+	}
+	else if (input1 == 2)
+	{
+		system("clear");
+		cout << "You ENTERD 2 \n\n---------------GAME ENDED---------------";
+		return 0;
+	}
+	else if (input1 == 3)
+	{
+		system("clear");
+		cout << "============ MEMBERS ============\n\n";
+		cout << "Talha Bilal     \n\n\n";
+		cout << "============ Roll no ============\n\n";
+		cout << "  21F-9453          \n\n\n";
+		cout << "============ PROJECT ============\n\n";
+		cout << "     PF CANDY CRUSH PROJECT      \n\n\n";
+		cout << "=========== FEATURES ===========\n\n";
+		cout << "=> CONSOLE BASE CANDY CRUSH \n";
+		cout << "=> SAVE/LOAD FEATURE AVAILABLE\n";
+		cout << "=> ALSO HAVE SPECIAL CANDIES\n\n\n";
+		cout << "====== THANKS FOR VISITING ======\n\n\n";
+	}
+	else
+	{
+		system("clear");
+		cout << "You ENTERD INVALID NUMBER \n\n--------------GAME ENDED--------------";
+		return 0;
+
+	}
+
+
+	cin.get();
+	return 0;
+
+}
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////14.Calendar
+////////////////////////////////////////////////////////////////////////////////////////////////////////////CODE:  
+
+#include <iostream>
+#include <cstdlib>
+#include <unistd.h>
+using namespace std;
+int main() 
+{
+	int n;
+	string str,year,month;
+       	cout << "Select from options below : \n1: Display Whole Calendar\n2: Display A specific month\n\nEnter your choice";
+	cin >> n;
+	if (n == 1)
+	{
+		cout << "Enter Year (YYYY): ";
+		cin >> year;
+		cout << "\nOpening Calendar\n";
+		usleep(2000000);
+		str = "cal " + year;
+		const char* cmdStr = str.c_str();
+		system(cmdStr);
+	}
+	else if (n == 2)
+	{
+		cout << "Enter Year YYYY: ";
+		cin >> year;	
+		cout << "Enter Month MM: ";
+		cin >> month;
+		cout << "\nOpening Calendar\n";
+		usleep(2000000);
+		str = "cal " + month + " " + year;
+		const char* cmdStr = str.c_str();
+		system(cmdStr);
+	}
+    	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////15.Library Management
+//////////////////////////////////////////////////////CODE:
+
+
+
+#include<iostream>
+#include<fstream>
+#include<unistd.h>
+#include<string>
+
+using namespace std;
+
+void Main_Menu();
+
+struct Book
+{
+	string Title;
+	string Author;
+	int ISBN;
+	int AvailableCopies;
+	void GetData()
+	{
+		cin.ignore();
+		cout << "Enter Name of Book : ";
+		getline(cin, Title);
+		cout << "Enter Name of Author : ";
+		getline(cin, Author);
+		cout << "Enter ISBN number : ";
+		cin >> ISBN;
+		cout << "Enter Number of copies Available : ";
+		cin >> AvailableCopies;
+	}
+};
+
+struct node
+{
+	Book data;
+	node* next;
+	node()
+	{
+		next = NULL;
+	}
+};
+
+
+class LibraryManagement
+{
+	node* BookHead;
+	fstream fileIn;
+public:
+	LibraryManagement();
+	void InsertBook(Book);
+	void Read();
+	void UpdateBook();
+	void DeleteBook();
+};
+
+
+LibraryManagement::LibraryManagement()
+{
+	fileIn.open("Books.txt");
+	if (fileIn.is_open())
+	{
+		if (!fileIn.eof())
+		{
+			node* curr = BookHead;
+			while (!fileIn.eof())
+			{
+				node* temp = new node;
+				fileIn >> temp->data.ISBN;
+				fileIn.ignore();
+				getline(fileIn, temp->data.Title);
+				getline(fileIn, temp->data.Author);
+				fileIn >> temp->data.AvailableCopies;
+				if (temp->data.ISBN > 0)
+				{
+					if (BookHead == NULL)
+					{
+						curr = BookHead = temp;
+					}
+					else
+					{
+						curr->next = temp;
+						curr = curr->next;
+					}
+				}
+			}
+		}
+	}
+	fileIn.close();
+}
+
+
+void LibraryManagement::InsertBook(Book obj)
+{
+	fileIn.open("Books.txt", ios::app);
+	fileIn << endl << endl << obj.ISBN << endl;
+	fileIn << obj.Title << endl;
+	fileIn << obj.Author << endl;
+	fileIn << obj.AvailableCopies;
+	fileIn.close();
+	node* temp = new node;
+	temp->data.ISBN = obj.ISBN;
+	temp->data.Title = obj.Title;
+	temp->data.Author = obj.Author;
+	temp->data.AvailableCopies = obj.AvailableCopies;
+	node* curr = BookHead;
+	if (curr == NULL)
+	{
+		curr = BookHead = temp;
+	}
+	else
+	{
+		if (BookHead->next != NULL)
+		{
+			while (curr->next != NULL)
+			{
+				curr = curr->next;
+			}
+		}
+		curr->next = temp;
+	}
+	cout << "Note : Data is written in file in following format\nISBN\nTitle\nAuthor\nAvailable copies\n";
+}
+
+
+void LibraryManagement::Read()
+{
+	int choice;
+	cout << "Enter 1 to view all data\nEnter 2 to view specific data\n";
+	cin >> choice;
+	while (choice != 1 && choice != 2)
+	{
+		cout << "Invalid Input!Enter again\n";
+		cin >> choice;
+	}
+	if (choice == 1)
+	{
+		cout << "\nDisplaying data of books : \n\n";
+		int c = 1;
+		node* curr = BookHead;
+		while (curr != NULL)
+		{
+			cout << "Book : " << c << endl << endl;
+			cout << "ISBN : " << curr->data.ISBN;
+			cout << "\nTitle : " << curr->data.Title;
+			cout << "\nAuthor : " << curr->data.Author;
+			cout << "\nAvailable Copies : " << curr->data.AvailableCopies << endl << endl;
+			curr = curr->next;
+			c++;
+		}
+	}
+	else if (choice == 2)
+	{
+		int num;
+		cout << "Enter ISBN number of book : \n";
+		cin >> num;
+		node* curr = BookHead;
+		while (curr != NULL)
+		{
+			if (num == curr->data.ISBN)
+			{
+				cout << "\nDisplaying book data : \n";
+				cout << "\nISBN : " << curr->data.ISBN;
+				cout << "\nTitle : " << curr->data.Title;
+				cout << "\nAuthor : " << curr->data.Author;
+				cout << "\nAvailable Copies : " << curr->data.AvailableCopies << endl;
+				break;
+			}
+			curr = curr->next;
+			if (curr == NULL)
+			{
+				cout << "Book not found!\n";
+			}
+		}
+	}
+}
+
+
+void LibraryManagement::UpdateBook()
+{
+	int num;
+	cout << "Enter ISBN number of book : \n";
+	cin >> num;
+	node* temp = BookHead;
+	while (temp != NULL)
+	{
+		if (num == temp->data.ISBN)
+		{
+			cout << "\nDisplaying book data : \n";
+			cout << "\nISBN : " << temp->data.ISBN;
+			cout << "\nTitle : " << temp->data.Title;
+			cout << "\nAuthor : " << temp->data.Author;
+			cout << "\nAvailable Copies : " << temp->data.AvailableCopies << endl;
+			int choice;
+			cout << "Enter 1 to Update ISBN\nEnter 2 to Update Book Title\nEnter 3 to Update Author\nEnter 4 to Update Number of copies available\n";
+			cin >> choice;
+			while (choice > 4 || choice < 1)
+			{
+				cout << "Invalid Input!\nEnter again : ";
+				cin >> choice;
+			}
+			if (choice == 1)
+			{
+				cout << "Enter new ISBN : ";
+				cin >> temp->data.ISBN;
+			}
+			else if (choice == 2)
+			{
+				cout << "Enter new Title : ";
+				cin >> temp->data.Title;
+			}
+			else if (choice == 3)
+			{
+				cout << "Enter new Author : ";
+				cin >> temp->data.Author;
+			}
+			else if (choice == 4)
+			{
+				cout << "Enter new Number of Copies Available : ";
+				cin >> temp->data.AvailableCopies;
+			}
+			fileIn.open("Books.txt", ios::out);
+			node* curr = BookHead;
+			while (curr != NULL)
+			{
+				fileIn << endl << endl << curr->data.ISBN << endl;
+				fileIn << curr->data.Title << endl;
+				fileIn << curr->data.Author << endl;
+				fileIn << curr->data.AvailableCopies;
+				curr = curr->next;
+			}
+			fileIn.close();
+			break;
+		}
+		temp = temp->next;
+		if (temp == NULL)
+		{
+			cout << "Book not found!\n";
+		}
+	}
+}
+
+
+void LibraryManagement::DeleteBook()
+{
+	int num;
+	cout << "Enter ISBN number of book : \n";
+	cin >> num;
+	node* temp = BookHead;
+	while (temp != NULL)
+	{
+		if (num == temp->data.ISBN)
+		{
+			if (temp == BookHead)
+			{
+				BookHead = BookHead->next;
+				delete temp;
+			}
+			else if (temp->next == NULL)
+			{
+				node* temp2 = temp;
+				temp = BookHead;
+				while (temp->next != temp2)
+				{
+					temp = temp->next;
+				}
+				temp->next = NULL;
+				delete temp2;
+			}
+			else
+			{
+				node* temp2 = temp;
+				temp = BookHead;
+				while (temp->next != temp2)
+				{
+					temp = temp->next;
+				}
+				temp->next = temp2->next;
+				temp2->next = NULL;
+				delete temp2;
+			}
+			fileIn.open("Books.txt", ios::out);
+			node* curr = BookHead;
+			while (curr != NULL)
+			{
+				fileIn << endl << endl << curr->data.ISBN << endl;
+				fileIn << curr->data.Title << endl;
+				fileIn << curr->data.Author << endl;
+				fileIn << curr->data.AvailableCopies;
+				curr = curr->next;
+			}
+			fileIn.close();
+			break;
+		}
+		temp = temp->next;
+		if (temp == NULL)
+		{
+			cout << "Book not found!\n";
+		}
+	}
+}
+
+
+int main()
+{
+	Main_Menu();
+	usleep(3000000);
+	cout<< endl ;
+}
+
+
+void Main_Menu()
+{
+	cout << "\n\n\t------------------------------------LIBRARY MANAGEMENT SYSTEM------------------------------------\n\n";
+	int choice;
+	LibraryManagement obj;
+	Book bobj;
+	cout << "\nEnter 1 to Insert data\nEnter 2 to Read data\nEnter 3 to Update data\nEnter 4 to Delete data\nPress anyother to Terminate\n";
+	cin >> choice;
+	while (choice < 5 && choice >0)
+	{
+		if (choice == 1)
+		{
+			bobj.GetData();
+			obj.InsertBook(bobj);
+			usleep(4000000);
+			cout<< endl ;
+			system("clear");
+		}
+		else if (choice == 2)
+		{
+			obj.Read();
+			usleep(4000000);
+			cout<< endl ;
+			system("clear");
+		}
+		else if (choice == 3)
+		{
+			obj.UpdateBook();
+			usleep(4000000);
+			cout<< endl ;
+			system("clear");
+		}
+		else if (choice == 4)
+		{
+			obj.DeleteBook();
+			usleep(4000000);
+			cout<< endl ;
+			system("clear");
+		}
+		cout << "\nEnter 1 to Insert data\nEnter 2 to Read data\nEnter 3 to Update data\nEnter 4 to Delete data\nPress anyother to Terminate\n";
+		cin >> choice;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////Main File
+//////////////////////////////////////////////////////CODE:  
+
+
+
+
+#include<iostream>
+#include<unistd.h>
+#include<pthread.h>
+#include<stdlib.h>
+#include<sys/wait.h>
+using namespace std;
+static float RAM;
+float Process[15] = { 0.5,0.6,0.2,0.3,0.4,0.2,0.3,0.3,0.3,0.3,0.3,0.5,0.7,0.3,0.6};
+void MainMenu();
+void* TicTacToe(void* arg)
+{
+	string cmd;
+	cmd = "gnome-terminal -- /bin/bash -c 'g++ -o TTT TicTacToe.cpp && ./TTT; exec bash'";
+	system(cmd.c_str());
+	return NULL;
+}
+void* TxtEditor(void* arg)
+{
+	string cmd;
+	cmd = "gnome-terminal -- /bin/bash -c 'g++ -o TE TXT_editor.cpp && ./TE; exec bash'";
+	system(cmd.c_str());
+	return NULL;
+}
+void* Calculator(void* arg)
+{
+	string cmd;
+	cmd = "gnome-terminal -- /bin/bash -c 'g++ -o Calc Calculator.cpp && ./Calc; exec bash'";
+	system(cmd.c_str());
+	return NULL;
+}
+void* PlayMusic(void* arg)
+{
+	string cmd;
+	cmd = "gnome-terminal -- /bin/bash -c 'g++ -o PM PlayMusic.cpp && ./PM; exec bash'";
+	system(cmd.c_str());
+	return NULL;
+}
+void* PlayVideo(void* arg)
+{
+	string cmd;
+	cmd = "gnome-terminal -- /bin/bash -c 'g++ -o PV PlayVideo.cpp && ./PV; exec bash'";
+	system(cmd.c_str());
+	return NULL;
+}
+void* OpenBrowser(void* arg)
+{
+	string cmd;
+	cmd = "gnome-terminal -- /bin/bash -c 'g++ -o OB OpenBrowser.cpp && ./OB; exec bash'";
+	system(cmd.c_str());
+	return NULL;
+}
+void* Clock(void* arg)
+{
+	string cmd;
+	cmd = "gnome-terminal -- /bin/bash -c 'g++ -o Cl Clock.cpp && ./Cl; exec bash'";
+	system(cmd.c_str());
+	return NULL;
+}
+void* Createfile(void* arg)
+{
+	string cmd;
+	cmd = "gnome-terminal -- /bin/bash -c 'g++ -o CrF CreateFile.cpp && ./CrF; exec bash'";
+	system(cmd.c_str());
+	return NULL;
+}
+void* Openfile(void* arg)
+{
+	string cmd;
+	cmd = "gnome-terminal -- /bin/bash -c 'g++ -o OF OpenFile.cpp && ./OF; exec bash'";
+	system(cmd.c_str());
+	return NULL;
+}
+void* Deletefile(void* arg)
+{
+	string cmd;
+	cmd = "gnome-terminal -- /bin/bash -c 'g++ -o DF DeleteFile.cpp && ./DF; exec bash'";
+	system(cmd.c_str());
+	return NULL;
+}
+void* Copyfile(void* arg)
+{
+	string cmd;
+	cmd = "gnome-terminal -- /bin/bash -c 'g++ -o CpF CopyFile.cpp && ./CpF; exec bash'";
+	system(cmd.c_str());
+	return NULL;
+}
+void* BattleShip(void* arg)
+{
+	string cmd;
+	cmd = "gnome-terminal -- /bin/bash -c 'g++ -o BS BattleShip.cpp && ./BS; exec bash'";
+	system(cmd.c_str());
+	return NULL;
+}
+void* CandyCrush(void* arg)
+{
+	string cmd;
+	cmd = "gnome-terminal -- /bin/bash -c 'g++ -o CC candycrush.cpp && ./CC; exec bash'";
+	system(cmd.c_str());
+	return NULL;
+}
+void* Calendar(void* arg)
+{
+	string cmd;
+	cmd = "gnome-terminal -- /bin/bash -c 'g++ -o Cald Calendar.cpp && ./Cald; exec bash'";
+	system(cmd.c_str());
+	return NULL;
+}
+void* LibrarySystem(void* arg)
+{
+	string cmd;
+	cmd = "gnome-terminal -- /bin/bash -c 'g++ -o LS LibSystem.cpp && ./LS; exec bash'";
+	system(cmd.c_str());
+	return NULL;
+}
+void* Kernel(void* arg)
+{
+	system("clear");
+	string choice;
+	string id;
+	cout << "\n\n\t\tKernel Mode\n\n";
+	do
+	{
+		system("pgrep -f gnome-terminal | xargs -I {} sh -c 'test \"$(readlink \"/proc/{}/cwd\")\" = \"$(pwd)\" && echo {}'");
+		cout << "Enter an ID to end that process : ";
+		cin >> id;
+		string str = "kill " + id;
+		system(str.c_str());
+		cout << "Select from choices below\n1 if you want to delete more processes\n2 for going to MainMenu\nany other for exit and kill all the remaining processes\nEnter choice : ";
+		cin >> choice;
+	} while (choice == "1");
+	if (choice == "2")
+	{
+		MainMenu();
+	}
+	else
+	{
+		system("pkill - f \"$(pwd)\"");
+	}
+	return NULL;
+}
+void MainMenu()
+{
+	cout << "\t\t********************\n";
+	cout << "\t\t**** MAIN MENU *****\n";
+	cout << "\t\t********************\n\n";
+	string cmd, choice;
+	pthread_t th[15];
+	do
+	{
+		system("clear");
+		cout << "Available RAM : " << RAM << endl << endl;
+		cout << "Select your choice number from below options\n\n";
+		cout << "1  : Tic Tac Toe\n";
+		cout << "2  : Text Editor\n";
+		cout << "3  : Calculator\n";
+		cout << "4  : Play Music\n";
+		cout << "5  : Play video\n";
+		cout << "6  : Open a web browser\n";
+		cout << "7  : Clock\n";
+		cout << "8  : Create a file\n";
+		cout << "9  : Open a file\n";
+		cout << "10 : Delete a file\n";
+		cout << "11 : Copy a file\n";
+		cout << "12 : BattleShip\n";
+		cout << "13 : Candy Crush\n";
+		cout << "14 : Calendar\n";
+		cout << "15 : Library Management\n";
+		cout << "16 : Kernel Mode\n";
+		cout << "17 : Scheduling Mode\n";
+		cout << "AnyOther For Exit\n";
+		cout << "\n\nEnter choice : ";
+		cin >> choice;
+		if (choice == "1")
+		{
+			pid_t pid = fork();
+			if (pid == 0)
+			{
+				if (RAM > Process[0])
+				{
+					pthread_create(&th[0], NULL, TicTacToe, NULL);
+					pthread_join(th[0], NULL);
+					RAM = RAM - Process[0];
+					exit(0);
+				}
+				else
+				{
+					cout << "\nNot Enough RAM!!\n";
+				}
+			}
+			else if (pid > 0)
+			{
+				wait(NULL);
+			}
+		}
+		else if (choice == "2")
+		{
+			pid_t pid = fork();
+			if (pid == 0)
+			{
+				if (RAM > Process[1])
+				{
+					pthread_create(&th[1], NULL, TxtEditor, NULL);
+					pthread_join(th[1], NULL);
+					RAM = RAM - Process[1];
+					exit(0);
+				}
+				else
+				{
+					cout << "\nNot Enough RAM!!\n";
+				}
+			}
+			else if (pid > 0)
+			{
+				wait(NULL);
+			}
+		}
+		else if (choice == "3")
+		{
+			pid_t pid = fork();
+			if (pid == 0)
+			{
+				if (RAM > Process[2])
+				{
+					pthread_create(&th[2], NULL, Calculator, NULL);
+					pthread_join(th[2], NULL);
+					RAM = RAM - Process[2];
+					exit(0);
+				}
+				else
+				{
+					cout << "\nNot Enough RAM!!\n";
+				}
+			}
+			else if (pid > 0)
+			{
+				wait(NULL);
+			}
+		}
+		else if (choice == "4")
+		{
+			pid_t pid = fork();
+			if (pid == 0)
+			{
+				if (RAM > Process[3])
+				{
+					pthread_create(&th[3], NULL, PlayMusic, NULL);
+					pthread_join(th[3], NULL);
+					RAM = RAM - Process[3];
+					exit(0);
+				}
+				else
+				{
+					cout << "\nNot Enough RAM!!\n";
+				}
+			}
+			else if (pid > 0)
+			{
+				wait(NULL);
+			}
+		}
+		else if (choice == "5")
+		{
+			pid_t pid = fork();
+			if (pid == 0)
+			{
+				if (RAM > Process[4])
+				{
+					pthread_create(&th[4], NULL, PlayVideo, NULL);
+					pthread_join(th[4], NULL);
+					RAM = RAM - Process[4];
+					exit(0);
+				}
+				else
+				{
+					cout << "\nNot Enough RAM!!\n";
+				}
+			}
+			else if (pid > 0)
+			{
+				wait(NULL);
+			}
+		}
+		else if (choice == "6")
+		{
+			pid_t pid = fork();
+			if (pid == 0)
+			{
+				if (RAM > Process[5])
+				{
+					pthread_create(&th[5], NULL, OpenBrowser, NULL);
+					pthread_join(th[5], NULL);
+					RAM = RAM - Process[5];
+					exit(0);
+				}
+				else
+				{
+					cout << "\nNot Enough RAM!!\n";
+				}
+			}
+			else if (pid > 0)
+			{
+				wait(NULL);
+			}
+		}
+		else if (choice == "7")
+		{
+			pid_t pid = fork();
+			if (pid == 0)
+			{
+				if (RAM > Process[6])
+				{
+					pthread_create(&th[6], NULL, Clock, NULL);
+					pthread_join(th[6], NULL);
+					RAM = RAM - Process[6];
+					exit(0);
+				}
+				else
+				{
+					cout << "\nNot Enough RAM!!\n";
+				}
+			}
+			else if (pid > 0)
+			{
+				wait(NULL);
+			}
+		}
+		else if (choice == "8")
+		{
+			pid_t pid = fork();
+			if (pid == 0)
+			{
+				if (RAM > Process[7])
+				{
+					pthread_create(&th[7], NULL, Createfile, NULL);
+					pthread_join(th[7], NULL);
+					RAM = RAM - Process[7];
+					exit(0);
+				}
+				else
+				{
+					cout << "\nNot Enough RAM!!\n";
+				}
+			}
+			else if (pid > 0)
+			{
+				wait(NULL);
+			}
+		}
+		else if (choice == "9")
+		{
+			pid_t pid = fork();
+			if (pid == 0)
+			{
+				if (RAM > Process[8])
+				{
+					pthread_create(&th[8], NULL, Openfile, NULL);
+					pthread_join(th[8], NULL);
+					RAM = RAM - Process[8];
+					exit(0);
+				}
+				else
+				{
+					cout << "\nNot Enough RAM!!\n";
+				}
+			}
+			else if (pid > 0)
+			{
+				wait(NULL);
+			}
+		}
+		else if (choice == "10")
+		{
+			pid_t pid = fork();
+			if (pid == 0)
+			{
+				if (RAM > Process[9])
+				{
+					pthread_create(&th[9], NULL, Deletefile, NULL);
+					pthread_join(th[9], NULL);
+					RAM = RAM - Process[9];
+					exit(0);
+				}
+				else
+				{
+					cout << "\nNot Enough RAM!!\n";
+				}
+			}
+			else if (pid > 0)
+			{
+				wait(NULL);
+			}
+		}
+		else if (choice == "11")
+		{
+			pid_t pid = fork();
+			if (pid == 0)
+			{
+				if (RAM > Process[10])
+				{
+					pthread_create(&th[10], NULL, Copyfile, NULL);
+					pthread_join(th[10], NULL);
+					RAM = RAM - Process[10];
+					exit(0);
+				}
+				else
+				{
+					cout << "\nNot Enough RAM!!\n";
+				}
+			}
+			else if (pid > 0)
+			{
+				wait(NULL);
+			}
+		}
+		else if (choice == "12")
+		{
+			pid_t pid = fork();
+			if (pid == 0)
+			{
+				if (RAM > Process[11])
+				{
+					pthread_create(&th[11], NULL, BattleShip, NULL);
+					pthread_join(th[11], NULL);
+					RAM = RAM - Process[11];
+					exit(0);
+				}
+				else
+				{
+					cout << "\nNot Enough RAM!!\n";
+				}
+			}
+			else if (pid > 0)
+			{
+				wait(NULL);
+			}
+		}
+		else if (choice == "13")
+		{
+			pid_t pid = fork();
+			if (pid == 0)
+			{
+				if (RAM > Process[12])
+				{
+					pthread_create(&th[12], NULL, CandyCrush, NULL);
+					pthread_join(th[12], NULL);
+					RAM = RAM - Process[12];
+					exit(0);
+				}
+				else
+				{
+					cout << "\nNot Enough RAM!!\n";
+				}
+			}
+			else if (pid > 0)
+			{
+				wait(NULL);
+			}
+		}
+		else if (choice == "14")
+		{
+			pid_t pid = fork();
+			if (pid == 0)
+			{
+				if (RAM > Process[13])
+				{
+					pthread_create(&th[13], NULL, Calendar, NULL);
+					pthread_join(th[13], NULL);
+					RAM = RAM - Process[13];
+					exit(0);
+				}
+				else
+				{
+					cout << "\nNot Enough RAM!!\n";
+				}
+			}
+			else if (pid > 0)
+			{
+				wait(NULL);
+			}
+		}
+		else if (choice == "15")
+		{
+			pid_t pid = fork();
+			if (pid == 0)
+			{
+				if (RAM > Process[14])
+				{
+					pthread_create(&th[14], NULL, LibrarySystem, NULL);
+					pthread_join(th[14], NULL);
+					RAM = RAM - Process[14];
+					exit(0);
+				}
+				else
+				{
+					cout << "\nNot Enough RAM!!\n";
+				}
+			}
+			else if (pid > 0)
+			{
+				wait(NULL);
+			}
+		}
+		else if (choice == "16")
+		{
+			pid_t pid = fork();
+			if (pid == 0)
+			{
+				pthread_create(&th[15], NULL, Kernel, NULL);
+				pthread_join(th[15], NULL);
+			}
+			else if (pid > 0)
+			{
+				wait(NULL);
+			}
+		}
+		else if (choice == "17")
+		{
+
+		}
+		else
+		{
+			cout << "Exiting Program...\n";
+			usleep(3000000);
+			break;
+		}
+	} while (choice == "1" || choice == "2" || choice == "3" || choice == "4" || choice == "5" || choice == "6" || choice == "7" || choice == "8" || choice == "9" || choice == "10" || choice == "11" || choice == "12" || choice == "13" || choice == "14" || choice == "15" || choice == "16" || choice == "17");
+}
+
+void* Intro(void* args)
+{
+	system("clear");
+	cout << "\n\n\n\n\n\n\n\n";
+	cout << "\t\t\t**********************************************************************\n";
+	cout << "\t\t\t**********************************************************************\n";
+	cout << "\t\t\t**    *****    *****      *      *****              **      ****    **\n";
+	cout << "\t\t\t**    *    *   *         * *     *    *           *    *   **       **\n";
+	cout << "\t\t\t**    *     *  ****     *   *    *     *  -----  *      *   ***     **\n";
+	cout << "\t\t\t**    *    *   *       *******   *    *           *    *      **    **\n";
+	cout << "\t\t\t**    *****    *****  *       *  *****              **     ****     **\n";
+	cout << "\t\t\t**********************************************************************\n";
+	cout << "\t\t\t**********************************************************************\n";
+	usleep(2000000);      //2000000 microseconds = 2 seconds
+	cout << "\n\n\n\n\n\t\t\t\t\t\t\tLOADING\n\t\t\t\t\t";
+	for (int i = 0; i < 36; i++)
+	{
+		cout << '.';
+		cout.flush();
+		usleep(90000);
+	}
+	usleep(2000000);
+	system("clear");
+	cout << "\n\n\n";
+	cout << "\t***********************************************\n";
+	cout << "\t******      Project Group Members :      ******\n";
+	cout << "\t***********************************************\n";
+	cout << "\n\n\n";
+	cout << "\t\t\t**********************************************************************\n";
+	cout << "\t\t\t******          21F-9122   --   Muhammad Affan Bukhari          ******\n";
+	cout << "\t\t\t**********************************************************************\n";
+	cout << "\t\t\t******          21F-9083   --   Muhammad Sameer                 ******\n";
+	cout << "\t\t\t**********************************************************************\n";
+	cout << "\t\t\t******          21F-9068   --   Ibraheem Noor                   ******\n";
+	cout << "\t\t\t**********************************************************************\n";
+	cout << "\t\t\t******          21F-9198   --   Sadeed Amir                     ******\n";
+	cout << "\t\t\t**********************************************************************\n";
+	cout << "\n\n\n\t\t\t\t\t    Press any key to continue";
+	cin.get();
+	system("clear");
+	return 0;
+}
+
+int main()
+{
+	pthread_t T;
+	pthread_create(&T, NULL, &Intro, NULL);
+	pthread_join(T, NULL);
+	cout << "\n\n\tEnter the Ram you want to allocate to your Operating System\n";
+	cin >> RAM;
+	char choice;
+	cout << "Press 1 for MainMenu\nAny Else for exit" << endl;
+	cin >> choice;
+	if (choice == '1')
+	{
+		system("clear");
+		cout << endl << endl;
+		MainMenu();
+	}
+	pthread_exit(NULL);
+	return 0;
+}
+
+
+
+
+
+
+
+
+
