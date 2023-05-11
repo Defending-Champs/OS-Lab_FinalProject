@@ -4,7 +4,8 @@
 #include<stdlib.h>
 #include<sys/wait.h>
 using namespace std;
-static float RAM;
+float T_ram;
+float RAM = 0;
 float Process[15] = { 0.5,0.6,0.2,0.3,0.4,0.2,0.3,0.3,0.3,0.3,0.3,0.5,0.7,0.3,0.6};
 void MainMenu();
 void* TicTacToe(void* arg)
@@ -148,7 +149,8 @@ void MainMenu()
 	do
 	{
 		system("clear");
-		cout << "Available RAM : " << RAM << endl << endl;
+		cout << "Total RAM : " << T_ram << endl << endl;
+		cout << "Used RAM : " << RAM << endl << endl;
 		cout << "Select your choice number from below options\n\n";
 		cout << "1  : Tic Tac Toe\n";
 		cout << "2  : Text Editor\n";
@@ -165,8 +167,7 @@ void MainMenu()
 		cout << "13 : Candy Crush\n";
 		cout << "14 : Calendar\n";
 		cout << "15 : Library Management\n";
-		cout << "16 : Kernel Mode\n";
-		cout << "17 : Scheduling Mode\n";
+		cout << "16 : ShutDown the PC\n";
 		cout << "AnyOther For Exit\n";
 		cout << "\n\nEnter choice : ";
 		cin >> choice;
@@ -175,11 +176,11 @@ void MainMenu()
 			pid_t pid = fork();
 			if (pid == 0)
 			{
-				if (RAM > Process[0])
+				if (T_ram-RAM > Process[0])
 				{
+					RAM = RAM - Process[0];
 					pthread_create(&th[0], NULL, TicTacToe, NULL);
 					pthread_join(th[0], NULL);
-					RAM = RAM - Process[0];
 					exit(0);
 				}
 				else
@@ -189,6 +190,11 @@ void MainMenu()
 			}
 			else if (pid > 0)
 			{
+				int status;
+			        waitpid(pid, &status, 0);
+	        		cout << "Process 0 finished running" << endl;
+	        		RAM = RAM + Process[0];
+	        		pid_t pid = waitpid(-1, NULL, 0);
 				wait(NULL);
 			}
 		}
@@ -197,11 +203,11 @@ void MainMenu()
 			pid_t pid = fork();
 			if (pid == 0)
 			{
-				if (RAM > Process[1])
+				if (T_ram-RAM > Process[1])
 				{
+					RAM = RAM - Process[1];
 					pthread_create(&th[1], NULL, TxtEditor, NULL);
 					pthread_join(th[1], NULL);
-					RAM = RAM - Process[1];
 					exit(0);
 				}
 				else
@@ -211,6 +217,11 @@ void MainMenu()
 			}
 			else if (pid > 0)
 			{
+				int status;
+			        waitpid(pid, &status, 0);
+	        		cout << "Process 0 finished running" << endl;
+	        		RAM = RAM + Process[1];
+	        		pid_t pid = waitpid(-1, NULL, 0);
 				wait(NULL);
 			}
 		}
@@ -219,11 +230,11 @@ void MainMenu()
 			pid_t pid = fork();
 			if (pid == 0)
 			{
-				if (RAM > Process[2])
+				if (T_ram-RAM > Process[2])
 				{
+					RAM = RAM - Process[2];
 					pthread_create(&th[2], NULL, Calculator, NULL);
 					pthread_join(th[2], NULL);
-					RAM = RAM - Process[2];
 					exit(0);
 				}
 				else
@@ -233,6 +244,11 @@ void MainMenu()
 			}
 			else if (pid > 0)
 			{
+				int status;
+			        waitpid(pid, &status, 0);
+	        		cout << "Process 0 finished running" << endl;
+	        		RAM = RAM + Process[2];
+	        		pid_t pid = waitpid(-1, NULL, 0);
 				wait(NULL);
 			}
 		}
@@ -241,11 +257,11 @@ void MainMenu()
 			pid_t pid = fork();
 			if (pid == 0)
 			{
-				if (RAM > Process[3])
+				if (T_ram-RAM > Process[3])
 				{
+					RAM = RAM - Process[3];
 					pthread_create(&th[3], NULL, PlayMusic, NULL);
 					pthread_join(th[3], NULL);
-					RAM = RAM - Process[3];
 					exit(0);
 				}
 				else
@@ -255,6 +271,11 @@ void MainMenu()
 			}
 			else if (pid > 0)
 			{
+				int status;
+			        waitpid(pid, &status, 0);
+	        		cout << "Process 0 finished running" << endl;
+	        		RAM = RAM + Process[3];
+	        		pid_t pid = waitpid(-1, NULL, 0);
 				wait(NULL);
 			}
 		}
@@ -263,11 +284,11 @@ void MainMenu()
 			pid_t pid = fork();
 			if (pid == 0)
 			{
-				if (RAM > Process[4])
+				if (T_ram-RAM > Process[4])
 				{
+					RAM = RAM - Process[4];
 					pthread_create(&th[4], NULL, PlayVideo, NULL);
 					pthread_join(th[4], NULL);
-					RAM = RAM - Process[4];
 					exit(0);
 				}
 				else
@@ -277,6 +298,11 @@ void MainMenu()
 			}
 			else if (pid > 0)
 			{
+				int status;
+			        waitpid(pid, &status, 0);
+	        		cout << "Process 0 finished running" << endl;
+	        		RAM = RAM + Process[4];
+	        		pid_t pid = waitpid(-1, NULL, 0);
 				wait(NULL);
 			}
 		}
@@ -285,11 +311,11 @@ void MainMenu()
 			pid_t pid = fork();
 			if (pid == 0)
 			{
-				if (RAM > Process[5])
+				if (T_ram-RAM > Process[5])
 				{
+					RAM = RAM - Process[5];
 					pthread_create(&th[5], NULL, OpenBrowser, NULL);
 					pthread_join(th[5], NULL);
-					RAM = RAM - Process[5];
 					exit(0);
 				}
 				else
@@ -299,6 +325,11 @@ void MainMenu()
 			}
 			else if (pid > 0)
 			{
+				int status;
+			        waitpid(pid, &status, 0);
+	        		cout << "Process 0 finished running" << endl;
+	        		RAM = RAM + Process[5];
+	        		pid_t pid = waitpid(-1, NULL, 0);
 				wait(NULL);
 			}
 		}
@@ -307,11 +338,11 @@ void MainMenu()
 			pid_t pid = fork();
 			if (pid == 0)
 			{
-				if (RAM > Process[6])
+				if (T_ram-RAM > Process[6])
 				{
+					RAM = RAM - Process[6];
 					pthread_create(&th[6], NULL, Clock, NULL);
 					pthread_join(th[6], NULL);
-					RAM = RAM - Process[6];
 					exit(0);
 				}
 				else
@@ -321,6 +352,11 @@ void MainMenu()
 			}
 			else if (pid > 0)
 			{
+				int status;
+			        waitpid(pid, &status, 0);
+	        		cout << "Process 0 finished running" << endl;
+	        		RAM = RAM + Process[6];
+	        		pid_t pid = waitpid(-1, NULL, 0);
 				wait(NULL);
 			}
 		}
@@ -329,11 +365,11 @@ void MainMenu()
 			pid_t pid = fork();
 			if (pid == 0)
 			{
-				if (RAM > Process[7])
+				if (T_ram-RAM > Process[7])
 				{
+					RAM = RAM - Process[7];
 					pthread_create(&th[7], NULL, Createfile, NULL);
 					pthread_join(th[7], NULL);
-					RAM = RAM - Process[7];
 					exit(0);
 				}
 				else
@@ -343,6 +379,11 @@ void MainMenu()
 			}
 			else if (pid > 0)
 			{
+				int status;
+			        waitpid(pid, &status, 0);
+	        		cout << "Process 0 finished running" << endl;
+	        		RAM = RAM + Process[7];
+	        		pid_t pid = waitpid(-1, NULL, 0);
 				wait(NULL);
 			}
 		}
@@ -351,11 +392,11 @@ void MainMenu()
 			pid_t pid = fork();
 			if (pid == 0)
 			{
-				if (RAM > Process[8])
+				if (T_ram-RAM > Process[8])
 				{
+					RAM = RAM - Process[8];
 					pthread_create(&th[8], NULL, Openfile, NULL);
 					pthread_join(th[8], NULL);
-					RAM = RAM - Process[8];
 					exit(0);
 				}
 				else
@@ -365,6 +406,11 @@ void MainMenu()
 			}
 			else if (pid > 0)
 			{
+				int status;
+			        waitpid(pid, &status, 0);
+	        		cout << "Process 0 finished running" << endl;
+	        		RAM = RAM + Process[8];
+	        		pid_t pid = waitpid(-1, NULL, 0);
 				wait(NULL);
 			}
 		}
@@ -373,11 +419,11 @@ void MainMenu()
 			pid_t pid = fork();
 			if (pid == 0)
 			{
-				if (RAM > Process[9])
+				if (T_ram-RAM > Process[9])
 				{
+					RAM = RAM - Process[9];
 					pthread_create(&th[9], NULL, Deletefile, NULL);
 					pthread_join(th[9], NULL);
-					RAM = RAM - Process[9];
 					exit(0);
 				}
 				else
@@ -387,6 +433,11 @@ void MainMenu()
 			}
 			else if (pid > 0)
 			{
+				int status;
+			        waitpid(pid, &status, 0);
+	        		cout << "Process 0 finished running" << endl;
+	        		RAM = RAM + Process[9];
+	        		pid_t pid = waitpid(-1, NULL, 0);
 				wait(NULL);
 			}
 		}
@@ -395,11 +446,11 @@ void MainMenu()
 			pid_t pid = fork();
 			if (pid == 0)
 			{
-				if (RAM > Process[10])
+				if (T_ram-RAM > Process[10])
 				{
+					RAM = RAM - Process[10];
 					pthread_create(&th[10], NULL, Copyfile, NULL);
 					pthread_join(th[10], NULL);
-					RAM = RAM - Process[10];
 					exit(0);
 				}
 				else
@@ -409,6 +460,11 @@ void MainMenu()
 			}
 			else if (pid > 0)
 			{
+				int status;
+			        waitpid(pid, &status, 0);
+	        		cout << "Process 0 finished running" << endl;
+	        		RAM = RAM + Process[10];
+	        		pid_t pid = waitpid(-1, NULL, 0);
 				wait(NULL);
 			}
 		}
@@ -417,11 +473,11 @@ void MainMenu()
 			pid_t pid = fork();
 			if (pid == 0)
 			{
-				if (RAM > Process[11])
+				if (T_ram-RAM > Process[11])
 				{
+					RAM = RAM - Process[11];
 					pthread_create(&th[11], NULL, BattleShip, NULL);
 					pthread_join(th[11], NULL);
-					RAM = RAM - Process[11];
 					exit(0);
 				}
 				else
@@ -431,6 +487,11 @@ void MainMenu()
 			}
 			else if (pid > 0)
 			{
+				int status;
+			        waitpid(pid, &status, 0);
+	        		cout << "Process 0 finished running" << endl;
+	        		RAM = RAM + Process[11];
+	        		pid_t pid = waitpid(-1, NULL, 0);
 				wait(NULL);
 			}
 		}
@@ -439,11 +500,11 @@ void MainMenu()
 			pid_t pid = fork();
 			if (pid == 0)
 			{
-				if (RAM > Process[12])
+				if (T_ram-RAM > Process[12])
 				{
+					RAM = RAM - Process[12];
 					pthread_create(&th[12], NULL, CandyCrush, NULL);
 					pthread_join(th[12], NULL);
-					RAM = RAM - Process[12];
 					exit(0);
 				}
 				else
@@ -453,6 +514,11 @@ void MainMenu()
 			}
 			else if (pid > 0)
 			{
+				int status;
+			        waitpid(pid, &status, 0);
+	        		cout << "Process 0 finished running" << endl;
+	        		RAM = RAM + Process[12];
+	        		pid_t pid = waitpid(-1, NULL, 0);
 				wait(NULL);
 			}
 		}
@@ -461,11 +527,11 @@ void MainMenu()
 			pid_t pid = fork();
 			if (pid == 0)
 			{
-				if (RAM > Process[13])
+				if (T_ram-RAM > Process[13])
 				{
+					RAM = RAM - Process[13];
 					pthread_create(&th[13], NULL, Calendar, NULL);
 					pthread_join(th[13], NULL);
-					RAM = RAM - Process[13];
 					exit(0);
 				}
 				else
@@ -475,6 +541,11 @@ void MainMenu()
 			}
 			else if (pid > 0)
 			{
+				int status;
+			        waitpid(pid, &status, 0);
+	        		cout << "Process 0 finished running" << endl;
+	        		RAM = RAM + Process[13];
+	        		pid_t pid = waitpid(-1, NULL, 0);
 				wait(NULL);
 			}
 		}
@@ -483,11 +554,11 @@ void MainMenu()
 			pid_t pid = fork();
 			if (pid == 0)
 			{
-				if (RAM > Process[14])
+				if (T_ram-RAM > Process[14])
 				{
+					RAM = RAM - Process[14];
 					pthread_create(&th[14], NULL, LibrarySystem, NULL);
 					pthread_join(th[14], NULL);
-					RAM = RAM - Process[14];
 					exit(0);
 				}
 				else
@@ -497,25 +568,17 @@ void MainMenu()
 			}
 			else if (pid > 0)
 			{
+				int status;
+			        waitpid(pid, &status, 0);
+	        		cout << "Process 0 finished running" << endl;
+	        		RAM = RAM + Process[15];
+	        		pid_t pid = waitpid(-1, NULL, 0);
 				wait(NULL);
 			}
 		}
 		else if (choice == "16")
 		{
-			pid_t pid = fork();
-			if (pid == 0)
-			{
-				pthread_create(&th[15], NULL, Kernel, NULL);
-				pthread_join(th[15], NULL);
-			}
-			else if (pid > 0)
-			{
-				wait(NULL);
-			}
-		}
-		else if (choice == "17")
-		{
-
+			exit(0);
 		}
 		else
 		{
@@ -523,7 +586,7 @@ void MainMenu()
 			usleep(3000000);
 			break;
 		}
-	} while (choice == "1" || choice == "2" || choice == "3" || choice == "4" || choice == "5" || choice == "6" || choice == "7" || choice == "8" || choice == "9" || choice == "10" || choice == "11" || choice == "12" || choice == "13" || choice == "14" || choice == "15" || choice == "16" || choice == "17");
+	} while (choice == "1" || choice == "2" || choice == "3" || choice == "4" || choice == "5" || choice == "6" || choice == "7" || choice == "8" || choice == "9" || choice == "10" || choice == "11" || choice == "12" || choice == "13" || choice == "14" || choice == "15"|| choice == "16");
 }
 
 void* Intro(void* args)
@@ -559,7 +622,7 @@ void* Intro(void* args)
 	cout << "\t\t\t**********************************************************************\n";
 	cout << "\t\t\t******          21F-9083   --   Muhammad Sameer                 ******\n";
 	cout << "\t\t\t**********************************************************************\n";
-	cout << "\t\t\t******          21F-9068   --   Ibraheem Noor                   ******\n";
+	cout << "\t\t\t******          21F-9068   --   Muhammad Ibraheem Noor          ******\n";
 	cout << "\t\t\t**********************************************************************\n";
 	cout << "\t\t\t******          21F-9198   --   Sadeed Amir                     ******\n";
 	cout << "\t\t\t**********************************************************************\n";
@@ -575,7 +638,7 @@ int main()
 	pthread_create(&T, NULL, &Intro, NULL);
 	pthread_join(T, NULL);
 	cout << "\n\n\tEnter the Ram you want to allocate to your Operating System\n";
-	cin >> RAM;
+	cin >> T_ram;
 	char choice;
 	cout << "Press 1 for MainMenu\nAny Else for exit" << endl;
 	cin >> choice;
